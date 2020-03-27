@@ -20,3 +20,5 @@ Docker를 이용하여 구동되기 때문에 편리합니다.
 
 ## License
 Free / Not free
+
+Free / Apache Licens
