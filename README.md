@@ -20,4 +20,4 @@ CC(Crafter Codebase)
 
 ## License
 
-Free
+Free / Apache Licens
