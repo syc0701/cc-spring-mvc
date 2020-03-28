@@ -6,14 +6,15 @@ Docker를 이용하여 구동되기 때문에 편리합니다.
 ## What's New
 * Create CC Network
 
-    --------------------------------------------------------------------------------------
-    | $ docker network create -d nat --subnet=172.16.1.0/24 --gateway=172.16.1.1 cc-net |
-    --------------------------------------------------------------------------------------
+    ~
+    $ docker network create -d nat --subnet=172.16.1.0/24 --gateway=172.16.1.1 cc-net
+    ~
 
-    
+    ~~~
     $ docker network ls
     NETWORK ID          NAME                DRIVER              SCOPE
     155f8469d9a1        cc-net              nat                 local
+    ~~~
 
     Mysql         | Web Server        
     ------------- | -------------
