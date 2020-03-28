@@ -1,0 +1,29 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_USER: ccuser
+      MYSQL_PASSWORD: ccpass
+      MYSQL_ROOT_PASSWORD: ccpass
+    networks:
+      frontend:
+        ipv4_address: 172.16.1.10
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9000:8080
+    networks:
+        frontend:
+          ipv4_address: 172.16.1.11
+      
+networks:
+    frontend:
+        external: true
