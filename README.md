@@ -33,10 +33,10 @@ Docker를 이용하여 구동되기 때문에 편리합니다.
     ~~~
     
    당신의 컴퓨터에 mysql client가 설치되어 있다면, mysql은 아래와 같이 확인하세요
-    __$ mysql -h 172.16.1.10 -u root -p__
+    >__$ mysql -h 172.16.1.10 -u root -p__
   
     Adminer는 웹 브라우저에서 아래와 같이 확인하세요.
-    __http://localhost:9000*__
+    >__http://localhost:9000*__
     
 
     
