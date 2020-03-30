@@ -1,4 +1,4 @@
-# Welcome to CC-Spring-MVC
+# Welcome to Crafter Codebase
 
 Spring Starter와 Mysql을 기반으로하는 프로젝트를 진행할때 필요한 CC(Crafter Codebase) 입니다.
 Docker를 이용하여 구동되기 때문에 편리합니다.
@@ -20,10 +20,11 @@ Docker를 이용하여 구동되기 때문에 편리합니다.
 
 * IP Configuration
 
-    Mysql           | Adminer       | Web Server        
-    --------------- | ------------- | -------------
-    172.16.1.10     | 172.16.1.11   | 172.16.1.20
-    ccuser / ccpass | root / ccpass | N/A
+    Service         | Mysql           | Adminer       | Web Server        
+    --------------- | --------------- | ------------- | -------------
+    IP Address      | 172.16.1.10     | 172.16.1.11   | 172.16.1.20
+    Port            | 3360            | 9000          | 8000
+    User / Password | ccuser / ccpass | root / ccpass | N/A
 
 
 ## How to use it.
@@ -36,49 +37,47 @@ Docker를 이용하여 구동되기 때문에 편리합니다.
     >__$ mysql -h 172.16.1.10 -u root -p__
   
     Adminer는 웹 브라우저에서 아래와 같이 확인하세요.
-    >__http://localhost:9000*__
+    >__http://localhost:9000__
     
-
     
-1. compose file을 실행해서 Mysql 과 Webservice를 실행한다.
-    - Mysql 스크립트 를 실행해서 DB와 Table도 만든다.
+    Mysql에 데이터베이스베이스와 사용자를 생성한다.
+    ~~~
+    create database db_craftercodebase;                 -- Creates the new database
+    create user 'ccuser'@'%' identified by 'ccpass';    -- Creates the user
+    grant all on db_craftercodebase.* to 'ccuser'@'%';  -- Gives all privileges to the new user on the newly created database
+    ~~~
     
+1. 코드를 컴파일 하고 패키지 하여 jar 파일을 생성한다.
+    >__mvn package__
+    
+1. Web 서비스 실행
+    >__java -jar target\cc-spring-mvc-0.0.1-SNAPSHOT.jar__
 
-1. cc-spring-mvc 를 Docker Image로 만듬..
-* 8080 포트를 사용할 수 있도록 해야함.
-* docker run --rm cc/spring-mvc:0.1 -p 8080:8080
-* 이미지기 실행되면서 컨테이너의 IP 가 자동으로 할당되서 IP를 확인해야함. (docker inspect CONTAINER_ID)
-
-
-1. Maven Build
-*  mvnw package
-
-1. Run
-*  java -jar target/cc-spring-docker-0.1.0.jar
+1. Web Service 확인    
+    >__http://localhost:8000/demo/all__
 
 
 ## Docker Image 만들기
 
-1, Maven Build
-    ~~~
-    $ mvnw package
-    ~~~
+    위 웹서비스가 실행되면 웹서비스를 Docker 이미지로 만들어서 확인한다.
 
-1. Docker file : cc-spring-mvc-docker
+1, Maven Build
+    
+    >__$ mvn package__
+
+1. Docker 빌드
+    >__$ docker build -f cc-spring-mvc-docker -t cc-spring-mvc:0.0.1 .__
+    
+    cc-spring-mvc-docker 의 내용
     ~~~
     FROM openjdk:8-jdk-alpine
     ARG JAR_FILE=target/*.jar
-    COPY ${JAR_FILE} app.jar
+    COPY ${JAR_FILE} /
     ENTRYPOINT ["java","-jar","/app.jar"]
     ~~~
 
-1. Docker 빌드
-    docker build -t springio/gs-spring-boot-docker .
-
 1. Docker 실행
-    docker run -p 8080:8080 -t springio/gs-spring-boot-docker
-    
-    
+    >__docker run --rm -p 8080:8080 -t cc-spring-mvc__
     
 
 ## License
