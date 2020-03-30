@@ -30,7 +30,7 @@ Docker를 이용하여 구동되기 때문에 편리합니다.
 ## How to use it.
 1. Mysql & Adminer 실행
     
-    >__$ docker-compose -f cc-mysql-adminer-compose.yml up__
+    >__$ docker-compose -f cc-mysql-adminer-compose.yml up -d__
     
    당신의 컴퓨터에 mysql client가 설치되어 있다면, mysql은 아래와 같이 확인하세요
     >__$ mysql -h 172.16.1.10 -u root -p__
