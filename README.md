@@ -29,21 +29,25 @@ Docker를 이용하여 구동되기 때문에 편리합니다.
 
 ## How to use it.
 1. Mysql & Adminer 실행
+
+    docker-compose 를 이용하여 Mysql 서비스와 Adminer서비스를 실행한다.
     
     >__$ docker-compose -f cc-mysql-adminer-compose.yml up -d__
     
    당신의 컴퓨터에 mysql client가 설치되어 있다면, mysql은 아래와 같이 확인하세요
-    >__$ mysql -h 172.16.1.10 -u root -p__
+    >$ mysql -h 172.16.1.10 -u root -p
   
-    Adminer는 웹 브라우저에서 아래와 같이 확인하세요.
-    >__http://localhost:9000__
+    Adminer는 웹 브라우저에서 아래와 같이 확인하세요. 연결계정은 root / ccpass를 입력한다.
+    >http://localhost:9000
     
     
-    Mysql에 데이터베이스베이스와 사용자를 생성한다.
-    ~~~
-    create database db_craftercodebase;                 -- Creates the new database
-    create user 'ccuser'@'%' identified by 'ccpass';    -- Creates the user
-    grant all on db_craftercodebase.* to 'ccuser'@'%';  -- Gives all privileges to the new user on the newly created database
+    Mysql에 데이터베이스베이스와 사용자를 스크립트를 실행하여 넣는다.
+    >$ mysql -h 172.16.1.10 -u root -p < cc-mysql-inital.sql
+    
+    ~~~cc-mysql-inital.sql
+    create database db_craftercodebase;                 
+    create user 'ccuser'@'%' identified by 'ccpass';    
+    grant all on db_craftercodebase.* to 'ccuser'@'%';  
     ~~~
     
 1. 코드를 컴파일 하고 패키지 하여 jar 파일을 생성한다.
@@ -61,27 +65,20 @@ Docker를 이용하여 구동되기 때문에 편리합니다.
     위 웹서비스가 실행되면 웹서비스를 Docker 이미지로 만들어서 확인한다.
 
 1, Maven Build
+    Java소스코드를 Maven을 이용하여 jar 파일로 패키지 한다.
     
     >__$ mvn package__
 
 1. Docker 빌드
-    >__$ docker build -f cc-spring-mvc-docker -t cc-spring-mvc:0.0.1 .__
+    >__$ docker build -f cc-spring-mvc-docker -t cc-spring-mvc .__
     
     cc-spring-mvc-docker 의 내용
     ~~~
     FROM openjdk:8-jdk-alpine
-    ARG JAR_FILE=target/*.jar
-    COPY ${JAR_FILE} /
+    COPY target/*.jar /app.jar
     ENTRYPOINT ["java","-jar","/app.jar"]
     ~~~
 
-1. Docker 실행
-    >__docker run --rm -p 8080:8080 -t cc-spring-mvc__
+1. Docker 이미지로 만들어진 Web서비스를 실행한다.
+    >__docker run --name cc-spring-mvc_web_1 --network frontend --rm --ip 172.16.1.20 -p 8080:8080 -t cc-spring-mvc__
     
-
-## License
-
-
-
-
-
