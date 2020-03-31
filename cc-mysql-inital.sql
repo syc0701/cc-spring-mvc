@@ -1,3 +1,5 @@
+-- For mysql
+
 -- Creates the new database
 CREATE database IF NOT EXISTS db_craftercodebase;
 
