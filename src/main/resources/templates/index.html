@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<META http-equiv="Pragma" content="no-cache">
+<html>
+<script>
+	function goPage() {
+		location.href="/employees/goList";
+	} 
+	
+	function request() {
+		location.href="/employees/list";
+	}
+</script>
+<head> 
+    <title>Getting Started: Serving Web Content</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel='stylesheet' href='/webjars/bootstrap/4.4.1/css/bootstrap.min.css'>
+</head>
+<body>
+	<h1>Here are links to all the pages.</h1>
+	<br>
+    <button type="button" class="btn btn-primary" onclick="goPage();">Employees</button>     
+    <br>
+    <br>
+    <button type="button" class="btn btn-primary" onclick="request();">Request list</button>
+    <br>
+    <br>
+    <a href="data-tables.html">Data table</a>
+    <br>
+    <br>
+    <a href="http://localhost:8080/employees/list2">http://localhost:8080/employees/list2</a>
+</body>
+</html>

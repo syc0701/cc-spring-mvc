@@ -1,4 +1,10 @@
-D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\accessingdatamysql\MainController.java
-D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\accessingdatamysql\User.java
+D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\demo\model\EmployeeEntity.java
+D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\config\WebConfig.java
+D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\demo\exception\RecordNotFoundException.java
+D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\login\LoginController.java
+D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\demo\web\TableEntity.java
+D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\demo\web\EmployeeController.java
 D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\AccessingDataMysqlApplication.java
-D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\accessingdatamysql\UserRepository.java
+D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\demo\web\EmployeeController2.java
+D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\demo\service\EmployeeService.java
+D:\canada\cc-spring-mvc\src\main\java\com\craftercodebase\demo\repository\EmployeeRepository.java
