@@ -2,13 +2,10 @@
 <META http-equiv="Pragma" content="no-cache">
 <html>
 <script>
-	function goPage() {
-		location.href="/employees/goList";
+	function searchAll() {
+		location.href="/employees/searchAll";
 	} 
-	
-	function request() {
-		location.href="/employees/list";
-	}
+	 
 </script>
 <head> 
     <title>Getting Started: Serving Web Content</title> 
@@ -18,19 +15,16 @@
 <body>
 	<h1>Here are links to all the pages.</h1>
 	<br>
-    <button type="button" class="btn btn-primary" onclick="goPage();">Employees</button>     
+    <br>
+    <a href="/employees/searchAll">All Employees</a>
     <br>
     <br>
-    <button type="button" class="btn btn-primary" onclick="request();">Request list</button>
+    <a href="/employees/showDataTables">Show the Data table</a>
     <br>
     <br>
-    <a href="data-tables.html">Data table</a>
+    <a href="/employees/search">/employees/search</a>
     <br>
     <br>
-    <a href="/employees/list2">/employees/list2</a>
-    <br>
-    <br>
-    <a href="/employees/list3">/employees/list3</a>
     <br>
     <br>
     <a href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css">/webjars/bootstrap/4.4.1/css/bootstrap.min.css</a>

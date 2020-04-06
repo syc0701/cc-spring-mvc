@@ -21,7 +21,7 @@ public class EmployeeService {
 	@Autowired
 	EmployeeRepository repository;
 
-	public Page<EmployeeEntity> getAllEmployees(String search, String sort, String order, int offset, int limit) {
+	public Page<EmployeeEntity> searchEmployees(String search, String sort, String order, int offset, int limit) {
 
 		int pageNo = offset / limit;
 
@@ -40,29 +40,11 @@ public class EmployeeService {
 		}
 
 		return result;
-
 	}
+ 
 
-	public Page<EmployeeEntity> getAllEmployees(Integer pageNo, Integer pageSize, String sortBy) {
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-
-		// List<EmployeeEntity> result = (List<EmployeeEntity>) repository.findAll();
-
-		Page<EmployeeEntity> pagedResult = repository.findAll(paging);
-
-		return pagedResult;
-
-//		if (pagedResult.hasContent()) {
-//			return pagedResult.getContent();
-//		} else {
-//			return new ArrayList<EmployeeEntity>();
-//		}
-	}
-
-	public List<EmployeeEntity> getAll() {
-
+	public List<EmployeeEntity> searchAllEmployees() {
 		List<EmployeeEntity> pagedResult = (List<EmployeeEntity>) repository.findAll();
-
 		return pagedResult;
 	}
 

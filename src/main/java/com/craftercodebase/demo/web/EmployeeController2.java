@@ -24,48 +24,15 @@ public class EmployeeController2 {
 	@Autowired
 	EmployeeService service;
 
-	@GetMapping(value = "/list")
-	public ResponseEntity<List<EmployeeEntity>> getAllEmployees(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy) {
-
-		Page<EmployeeEntity> pagedResult = service.getAllEmployees(pageNo, pageSize, sortBy);
-		if (pagedResult.hasContent()) {
-			return new ResponseEntity<List<EmployeeEntity>>(pagedResult.getContent(), new HttpHeaders(), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<List<EmployeeEntity>>(new ArrayList<EmployeeEntity>(), new HttpHeaders(),
-					HttpStatus.OK);
-		}
-	}
-
-	@GetMapping(value = "/list2")
-	public ResponseEntity<TableEntity> getAllEmployees(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer pageSize) {
-
-		Page<EmployeeEntity> pagedResult = service.getAllEmployees(pageNo, pageSize, "id");
-		if (pagedResult.hasContent()) {
-
-			TableEntity entity = new TableEntity();
-			entity.setTotalNotFiltered(pagedResult.getTotalElements());
-			entity.setTotal(pagedResult.getTotalElements());
-			entity.setRows(pagedResult.getContent());
-
-			// return new ResponseEntity<List<EmployeeEntity>>(pagedResult.getContent(), new
-			// HttpHeaders(), HttpStatus.OK);
-			return new ResponseEntity<TableEntity>(entity, new HttpHeaders(), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<TableEntity>(new TableEntity(), new HttpHeaders(), HttpStatus.OK);
-		}
-	}
-
-	@GetMapping(value = "/list3")
-	public TableEntity getAllEmployees(@RequestParam String search,
+	@GetMapping(value = "/search")
+	public TableEntity searchEmployees(@RequestParam String search,
 			@RequestParam(required = false, defaultValue = "id") String sort, @RequestParam String order,
 			@RequestParam int offset, @RequestParam int limit) {
 
 		System.out.println(
 				"search=" + search + ", sort=" + sort + ", order=" + order + ", offset=" + offset + ", limit=" + limit);
 
-		Page<EmployeeEntity> result = service.getAllEmployees(search, sort, order, offset, limit);
+		Page<EmployeeEntity> result = service.searchEmployees(search, sort, order, offset, limit);
 
 		TableEntity entity = new TableEntity();
 		entity.setTotalNotFiltered(result.getTotalElements());

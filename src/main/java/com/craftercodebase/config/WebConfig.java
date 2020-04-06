@@ -13,46 +13,47 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Bean
-    @Description("Thymeleaf template resolver serving HTML 5")
-    public ClassLoaderTemplateResolver templateResolver() {
+	@Bean
+	@Description("Thymeleaf template resolver serving HTML 5")
+	public ClassLoaderTemplateResolver templateResolver() {
 
-    	ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
-        templateResolver.setPrefix("templates/");
-    	//templateResolver.setPrefix("/WEB-INF/templates/");
-        templateResolver.setCacheable(false);
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML5");
-        templateResolver.setCharacterEncoding("UTF-8");
+		templateResolver.setPrefix("templates/");
+		// templateResolver.setPrefix("/WEB-INF/templates/");
+		templateResolver.setCacheable(false);
+		templateResolver.setSuffix(".html");
+		templateResolver.setTemplateMode("HTML5");
+		templateResolver.setCharacterEncoding("UTF-8");
 
-        return templateResolver;
-    }
+		return templateResolver;
+	}
 
-    @Bean
-    @Description("Thymeleaf template engine with Spring integration")
-    public SpringTemplateEngine templateEngine() {
+	@Bean
+	@Description("Thymeleaf template engine with Spring integration")
+	public SpringTemplateEngine templateEngine() {
 
-    	SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
+		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+		templateEngine.setTemplateResolver(templateResolver());
 
-        return templateEngine;
-    }
+		return templateEngine;
+	}
 
-    @Bean
-    @Description("Thymeleaf view resolver")
-    public ViewResolver viewResolver() {
+	@Bean
+	@Description("Thymeleaf view resolver")
+	public ViewResolver viewResolver() {
 
-    	ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 
-        viewResolver.setTemplateEngine(templateEngine());
-        viewResolver.setCharacterEncoding("UTF-8");
+		viewResolver.setTemplateEngine(templateEngine());
+		viewResolver.setCharacterEncoding("UTF-8");
 
-        return viewResolver;
-    }
+		return viewResolver;
+	}
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("index");
-    }
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/").setViewName("index");
+		registry.addViewController("/employees/showDataTables").setViewName("data-tables");
+	}
 }

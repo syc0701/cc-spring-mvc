@@ -3,22 +3,13 @@ package com.craftercodebase.demo.web;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.craftercodebase.demo.exception.RecordNotFoundException;
 import com.craftercodebase.demo.model.EmployeeEntity;
@@ -31,15 +22,19 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService service;
 
-	@GetMapping(value = "/goList")
-	public String goEmployeeListPage(Model model) {
+	@GetMapping(value = "/searchAll")
+	public String searchAllEmployees(Model model) {
 
-		List<EmployeeEntity> result = service.getAll();
-
+		List<EmployeeEntity> result = service.searchAllEmployees();
 		model.addAttribute("employees", result);
 
 		return "list-employees";
 	}
+
+//	@GetMapping(value = "/showDataTables")
+//	public String showDataTables() {
+//		return "data-tables.html";
+//	}
 
 	@RequestMapping(path = { "/edit", "/edit/{id}" })
 	public String editEmployeeById(Model model, @PathVariable("id") Optional<Long> id) throws RecordNotFoundException {

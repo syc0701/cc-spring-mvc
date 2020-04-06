@@ -24,6 +24,7 @@
     <!-- main wrapper -->
     <!-- ============================================================== -->
         <div class="container-fluid  dashboard-content">
+       
             <!-- ============================================================== -->
             <!-- pageheader -->
             <!-- ============================================================== -->
@@ -53,7 +54,7 @@
 									   data-pagination="true"
 									   data-side-pagination="server"
 									   data-query-params="queryParams"					
-                                	   data-url="/employees/list3"                                 	   
+                                	   data-url="/employees/search"                                 	   
                                 	   class="table table-striped table-bordered first">
                                     <thead>
                                         <tr>
@@ -103,17 +104,12 @@
     
     <script>
 	  function queryParams(params) {
-		console.log("Hello............");
-		console.log(params); 
+		// do something 
 	    return params
 	  }
 	  
 	  function firstNameSorter(a, b) {
-		  console.log("a=" + a + ", b=" + b);
-		  
-		  //var aa = a.replace('$', '')
-		  //var bb = b.replace('$', '')
-		  //return aa - bb
+		//do something
 	  }
 	</script>
     
