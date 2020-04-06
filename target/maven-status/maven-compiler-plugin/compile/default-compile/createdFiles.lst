@@ -6,3 +6,5 @@ com\craftercodebase\config\WebConfig.class
 com\craftercodebase\demo\service\EmployeeService.class
 com\craftercodebase\demo\model\EmployeeEntity.class
 com\craftercodebase\login\LoginController.class
+com\craftercodebase\demo\web\EmployeeController2.class
+com\craftercodebase\demo\web\TableEntity.class

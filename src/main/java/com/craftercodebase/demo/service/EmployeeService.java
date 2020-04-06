@@ -21,28 +21,49 @@ public class EmployeeService {
 	@Autowired
 	EmployeeRepository repository;
 
-//	public List<EmployeeEntity> getAllEmployees()
-	public Page<EmployeeEntity> getAllEmployees()
-    {
-        return getAllEmployees(0, 10, "email");
-    }
-	
-//	public List<EmployeeEntity> getAllEmployees(Integer pageNo, Integer pageSize, String sortBy) {
+	public Page<EmployeeEntity> getAllEmployees(String search, String sort, String order, int offset, int limit) {
+
+		int pageNo = offset / limit;
+
+		Sort.Direction direction = Sort.Direction.DESC;
+		if (order.equals("asc")) {
+			direction = Sort.Direction.ASC;
+		}
+
+		Pageable paging = PageRequest.of(pageNo, limit, Sort.by(direction, sort));
+
+		Page<EmployeeEntity> result = null;
+		if (search == "") {
+			result = (Page<EmployeeEntity>) repository.findAll(paging);
+		} else {
+			result = (Page<EmployeeEntity>) repository.findByFirstNameLike("%" + search + "%", paging);
+		}
+
+		return result;
+
+	}
+
 	public Page<EmployeeEntity> getAllEmployees(Integer pageNo, Integer pageSize, String sortBy) {
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-		
 
 		// List<EmployeeEntity> result = (List<EmployeeEntity>) repository.findAll();
 
 		Page<EmployeeEntity> pagedResult = repository.findAll(paging);
-		
+
 		return pagedResult;
-		 
+
 //		if (pagedResult.hasContent()) {
 //			return pagedResult.getContent();
 //		} else {
 //			return new ArrayList<EmployeeEntity>();
 //		}
+	}
+
+	public List<EmployeeEntity> getAll() {
+
+		List<EmployeeEntity> pagedResult = (List<EmployeeEntity>) repository.findAll();
+
+		return pagedResult;
 	}
 
 	public EmployeeEntity getEmployeeById(Long id) throws RecordNotFoundException {

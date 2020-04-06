@@ -67,14 +67,20 @@
 			<artifactId>bootstrap</artifactId>
 			<version>4.4.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.webjars.bower/jquery -->
+		<!-- https://mvnrepository.com/artifact/org.webjars.bower/bootstrap-table -->
 		<dependency>
 			<groupId>org.webjars.bower</groupId>
+			<artifactId>bootstrap-table</artifactId>
+			<version>1.16.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.webjars/jquery -->
+		<dependency>
+			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
 			<version>3.4.1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymelea3 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>

@@ -30,19 +30,15 @@ public class EmployeeController {
 
 	@Autowired
 	EmployeeService service;
-	
+
 	@GetMapping(value = "/goList")
 	public String goEmployeeListPage(Model model) {
-		
-//		List<EmployeeEntity> list = service.getAllEmployees();
-//		model.addAttribute("employees", list);
-		
-		Page<EmployeeEntity> pagedResult =service.getAllEmployees();
-		
-		model.addAttribute("employees", pagedResult.getContent());
-		model.addAttribute("totalPages",  pagedResult.getTotalPages());
-		
-        return "list-employees";
+
+		List<EmployeeEntity> result = service.getAll();
+
+		model.addAttribute("employees", result);
+
+		return "list-employees";
 	}
 
 	@RequestMapping(path = { "/edit", "/edit/{id}" })
