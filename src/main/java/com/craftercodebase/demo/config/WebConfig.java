@@ -1,4 +1,4 @@
-package com.craftercodebase.config;
+package com.craftercodebase.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +14,12 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 public class WebConfig implements WebMvcConfigurer {
 
 	@Bean
-	@Description("Thymeleaf template resolver serving HTML 5")
+	@Description("Thymeleaf template resolver")
 	public ClassLoaderTemplateResolver templateResolver() {
 
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
 		templateResolver.setPrefix("templates/");
-		// templateResolver.setPrefix("/WEB-INF/templates/");
 		templateResolver.setCacheable(false);
 		templateResolver.setSuffix(".html");
 		templateResolver.setTemplateMode("HTML5");
@@ -30,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 
 	@Bean
-	@Description("Thymeleaf template engine with Spring integration")
+	@Description("Thymeleaf template engine")
 	public SpringTemplateEngine templateEngine() {
 
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -53,6 +52,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("index");
+		// registry.addViewController("/").setViewName("index");
+		registry.addViewController("/").setViewName("data-tables");
 	}
 }

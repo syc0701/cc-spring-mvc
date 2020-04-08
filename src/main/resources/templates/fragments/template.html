@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<!-- Fragment for Header -->
+	<head th:fragment="header">
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Crafter Codebase : Spring MVC Example</title>
+		
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="/concept/assets/vendor/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/concept/assets/libs/css/style.css">
+		<link rel="stylesheet" type="text/css" href="/concept/assets/vendor/fonts/circular-std/style.css">
+		<link rel="stylesheet" type="text/css" href="/concept/assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+		<link rel="stylesheet" type="text/css" href="/concept/assets/vendor/datatables/css/dataTables.bootstrap4.css">
+		<link rel="stylesheet" type="text/css" href="/concept/assets/vendor/datatables/css/buttons.bootstrap4.css">
+		<link rel="stylesheet" type="text/css" href="/concept/assets/vendor/datatables/css/select.bootstrap4.css">
+		<link rel="stylesheet" type="text/css" href="/concept/assets/vendor/datatables/css/fixedHeader.bootstrap4.css">
+		
+		<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+	</head>
+	
+	<!-- Fragment for page header -->
+	<div class="row" th:fragment="page-header">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+			<div class="page-header">
+				<h2 class="pageheader-title">Crafter Codebase</h2>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Fragment for card header -->
+	<div th:fragment="card-header">
+		<h5 class="card-header">Spring Boot & Spring MVC & Thymeleaf</h5>
+	</div>
+	
+	<!-- Fragment for footer-->	
+	<div class="footer" th:fragment="footer">
+         <div class="container-fluid">
+             <div class="row">
+                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                     Powered by Youngcheol
+                 </div>
+                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                     <div class="text-md-right footer-links d-none d-sm-block">
+                         <a href="javascript: void(0);">About</a>
+                         <a href="javascript: void(0);">Support</a>
+                         <a href="javascript: void(0);">Contact Us</a>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     
+</html>

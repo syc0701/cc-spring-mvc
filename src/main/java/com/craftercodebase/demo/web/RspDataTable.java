@@ -2,12 +2,23 @@ package com.craftercodebase.demo.web;
 
 import java.util.List;
 
-public class TableEntity {
+/**
+ * Class for Bootstrap table
+ * 
+ * @author syc0701
+ *
+ */
+public class RspDataTable {
 
 	private long total;
 	private long totalNotFiltered;
 	private List rows;
 
+	/**
+	 * Total number of data
+	 * 
+	 * @return
+	 */
 	public long getTotal() {
 		return total;
 	}

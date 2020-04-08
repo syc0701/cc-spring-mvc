@@ -6,11 +6,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.craftercodebase.demo.model.EmployeeEntity;
- 
+
 @Repository
-public interface EmployeeRepository
-        extends PagingAndSortingRepository<EmployeeEntity, Long> {
- 
+public interface EmployeeRepository extends PagingAndSortingRepository<EmployeeEntity, Long> {
+
 	Page<EmployeeEntity> findByFirstNameLike(String firstname, Pageable page);
-	
+
 }

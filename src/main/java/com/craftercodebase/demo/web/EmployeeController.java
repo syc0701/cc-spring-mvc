@@ -39,6 +39,21 @@ public class EmployeeController {
 		return "data-tables";
 	}
 
+	@GetMapping(value = "/search")
+	public @ResponseBody RspDataTable searchEmployees(@RequestParam String search,
+			@RequestParam(required = false, defaultValue = "id") String sort, @RequestParam String order,
+			@RequestParam int offset, @RequestParam int limit) {
+
+		Page<EmployeeEntity> result = service.searchEmployees(search, sort, order, offset, limit);
+
+		RspDataTable entity = new RspDataTable();
+		entity.setTotalNotFiltered(result.getTotalElements());
+		entity.setTotal(result.getTotalElements());
+		entity.setRows(result.getContent());
+
+		return entity;
+	}
+
 	@RequestMapping(value = "/add")
 	public String addEmployeeById(Model model) throws RecordNotFoundException {
 		model.addAttribute("employee", new EmployeeEntity());
@@ -62,27 +77,11 @@ public class EmployeeController {
 		return "add-edit-employee";
 	}
 
-	@GetMapping(value = "/search")
-	public @ResponseBody TableEntity searchEmployees(@RequestParam String search,
-			@RequestParam(required = false, defaultValue = "id") String sort, @RequestParam String order,
-			@RequestParam int offset, @RequestParam int limit) {
-
-		Page<EmployeeEntity> result = service.searchEmployees(search, sort, order, offset, limit);
-
-		TableEntity entity = new TableEntity();
-		entity.setTotalNotFiltered(result.getTotalElements());
-		entity.setTotal(result.getTotalElements());
-		entity.setRows(result.getContent());
-
-		return entity;
-	}
-
 	@RequestMapping(path = "/delete/{id}")
 	public @ResponseBody String deleteEmployeeById(Model model, @PathVariable("id") Long id)
 			throws RecordNotFoundException {
 
 		service.deleteEmployeeById(id);
-
 		return "Success";
 	}
 
