@@ -1,6 +1,5 @@
 package com.craftercodebase.demo.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +40,6 @@ public class EmployeeService {
 
 		return result;
 	}
- 
 
 	public List<EmployeeEntity> searchAllEmployees() {
 		List<EmployeeEntity> pagedResult = (List<EmployeeEntity>) repository.findAll();
