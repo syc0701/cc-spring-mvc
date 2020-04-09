@@ -1,7 +1,15 @@
+<!-- ============================================================== -->
+<!-- 
+	Shows a list of employees. Send and receive data through Ajax with the Web server.
+	Display data using bootstrap table.
+
+	Date : April 6, 2020
+	Author : Youngcheol
+ -->
+<!-- ============================================================== -->
 <!doctype html>
 <html lang="en">
-
-<div th:insert="fragments/template.html :: header"></div>	
+<div th:insert="fragments/template.html :: header"></div>
 
 <body>
 
@@ -9,9 +17,9 @@
 	<!-- main wrapper -->
 	<!-- ============================================================== -->
 	<div class="container-fluid  dashboard-content">
-		
-		<div th:insert="fragments/template.html :: page-header"></div>	
-		
+
+		<div th:insert="fragments/template.html :: page-header"></div>
+
 		<div class="row">
 			<!-- ============================================================== -->
 			<!-- Bootstrap table  -->
@@ -26,13 +34,18 @@
 									<i class="glyphicon glyphicon-remove"></i> Add Employee
 								</button>
 							</div>
+							<!-- ============================================================== -->
+							<!-- ${pageNumber} is to show the original page when returning to this page after data modification. -->
+							<!-- ============================================================== -->
 							<table id="table" data-toggle="table" data-search="true" data-search-on-enter-key="true" data-height="460" data-pagination="true"
-								th:attr="data-page-number=${pageNumber}" data-side-pagination="server" data-query-params="queryParams" data-url="/employees/search"
-								data-click-to-select="true" class="table table-striped table-bordered">
+								th:attr="data-page-number=${pageNumber}" data-side-pagination="server" data-server-sort="true" 
+								data-sort-order="desc" data-sort-name="id" data-query-params="queryParams"
+								data-response-handler="responseHandler" data-url="/employees/search" data-click-to-select="true"
+								class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th data-field="id">ID</th>
-										<th data-field="firstName" data-sortable="true" data-sorter="firstNameSorter">First Name</th>
+										<th data-field="id" data-sortable="true" data-sorter="idSorter">ID</th>
+										<th data-field="firstName">First Name</th>
 										<th data-field="lastName">Last Name</th>
 										<th data-field="email">Email</th>
 										<th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">Operate</th>
@@ -43,40 +56,19 @@
 					</div>
 				</div>
 			</div>
-
 			<!-- ============================================================== -->
 			<!-- End of Bootstrap table  -->
 			<!-- ============================================================== -->
 		</div>
 	</div>
-	
-	<div class="card-footer" th:replace="fragments/template.html :: footer"></div>	
 
-	<!-- Optional JavaScript -->
-	<script src="https://unpkg.com/jquery@3.4.1/dist/jquery.min.js"></script>
+	<div class="card-footer" th:replace="fragments/template.html :: footer"></div>
 
-	<script src="/concept/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-	<script src="/concept/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-	<script src="/concept/assets/vendor/multi-select/js/jquery.multi-select.js"></script>
-	<script src="/concept/assets/libs/js/main-js.js"></script>
-	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-	<script src="/concept/assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-	<script src="/concept/assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
-	<script src="/concept/assets/vendor/datatables/js/data-table.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
-	<script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
-	<script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
-	<script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+	<!-- ============================================================== -->
+	<!-- JQuery js files and Script files used in bootstrap table 
+	<!-- ============================================================== -->
+	<th:block th:insert="fragments/template.html :: script"></th:block>
 
-	<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
- 
- 
 	<script>
 		var $table = $('#table')
 		var $remove = $('#remove')
@@ -93,7 +85,14 @@
 			return params
 		}
 
-		function firstNameSorter(a, b) {
+		function responseHandler(res) {
+			if ($('#table').bootstrapTable('getOptions').sortOrder === 'desc') {
+				res.rows = res.rows.reverse()
+			}
+			return res
+		}
+
+		function idSorter(a, b) {
 			//do something
 		}
 		function operateFormatter(value, row, index) {

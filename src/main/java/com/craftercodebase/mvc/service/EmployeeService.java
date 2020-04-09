@@ -1,6 +1,5 @@
-package com.craftercodebase.demo.service;
+package com.craftercodebase.mvc.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.craftercodebase.demo.exception.RecordNotFoundException;
-import com.craftercodebase.demo.model.EmployeeEntity;
-import com.craftercodebase.demo.repository.EmployeeRepository;
+import com.craftercodebase.mvc.exception.RecordNotFoundException;
+import com.craftercodebase.mvc.model.EmployeeEntity;
+import com.craftercodebase.mvc.repository.EmployeeRepository;
 
 @Service
 public class EmployeeService {
@@ -39,11 +38,6 @@ public class EmployeeService {
 		}
 
 		return result;
-	}
-
-	public List<EmployeeEntity> searchAllEmployees() {
-		List<EmployeeEntity> pagedResult = (List<EmployeeEntity>) repository.findAll();
-		return pagedResult;
 	}
 
 	public EmployeeEntity getEmployeeById(Long id) throws RecordNotFoundException {

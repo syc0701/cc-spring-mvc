@@ -1,4 +1,4 @@
-package com.craftercodebase.demo.config;
+package com.craftercodebase.mvc.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,6 +53,6 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		// registry.addViewController("/").setViewName("index");
-		registry.addViewController("/").setViewName("data-tables");
+		registry.addViewController("/").setViewName("list-employees");
 	}
 }

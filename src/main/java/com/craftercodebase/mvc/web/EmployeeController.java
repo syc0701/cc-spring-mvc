@@ -1,6 +1,5 @@
-package com.craftercodebase.demo.web;
+package com.craftercodebase.mvc.web;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.craftercodebase.demo.exception.RecordNotFoundException;
-import com.craftercodebase.demo.model.EmployeeEntity;
-import com.craftercodebase.demo.service.EmployeeService;
+import com.craftercodebase.mvc.exception.RecordNotFoundException;
+import com.craftercodebase.mvc.model.EmployeeEntity;
+import com.craftercodebase.mvc.service.EmployeeService;
 
 @Controller
 @RequestMapping("/employees")
@@ -25,23 +24,16 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService service;
 
-	@GetMapping(value = "/searchAll")
-	public String searchAllEmployees(Model model) {
-
-		List<EmployeeEntity> result = service.searchAllEmployees();
-		model.addAttribute("employees", result);
-
+	@GetMapping(value = "/showDataTables")
+	public String showDataTables() {
 		return "list-employees";
 	}
 
-	@GetMapping(value = "/showDataTables")
-	public String showDataTables() {
-		return "data-tables";
-	}
-
 	@GetMapping(value = "/search")
-	public @ResponseBody RspDataTable searchEmployees(@RequestParam String search,
-			@RequestParam(required = false, defaultValue = "id") String sort, @RequestParam String order,
+	public @ResponseBody RspDataTable searchEmployees(
+			@RequestParam String search,
+			@RequestParam(required = false, defaultValue = "id") String sort,
+			@RequestParam(required = false, defaultValue = "desc") String order,
 			@RequestParam int offset, @RequestParam int limit) {
 
 		Page<EmployeeEntity> result = service.searchEmployees(search, sort, order, offset, limit);
@@ -50,6 +42,7 @@ public class EmployeeController {
 		entity.setTotalNotFiltered(result.getTotalElements());
 		entity.setTotal(result.getTotalElements());
 		entity.setRows(result.getContent());
+		entity.setSortOrder(order);
 
 		return entity;
 	}
@@ -92,7 +85,7 @@ public class EmployeeController {
 		service.createOrUpdateEmployee(employee);
 		model.addAttribute("pageNumber", pageNumber.get());
 
-		return "data-tables";
+		return "redirect:/";
 	}
 
 }

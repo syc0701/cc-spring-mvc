@@ -1,4 +1,4 @@
-package com.craftercodebase.demo.exception;
+package com.craftercodebase.mvc.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,4 +1,4 @@
-package com.craftercodebase.demo.model;
+package com.craftercodebase.mvc.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

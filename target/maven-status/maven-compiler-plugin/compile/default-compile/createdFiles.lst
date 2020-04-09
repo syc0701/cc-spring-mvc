@@ -1,5 +1,0 @@
-com\craftercodebase\demo\repository\EmployeeRepository.class
-com\craftercodebase\demo\exception\RecordNotFoundException.class
-com\craftercodebase\demo\web\EmployeeController.class
-com\craftercodebase\demo\service\EmployeeService.class
-com\craftercodebase\demo\model\EmployeeEntity.class

@@ -1,9 +1,12 @@
-package com.craftercodebase.demo.web;
+package com.craftercodebase.mvc.web;
 
 import java.util.List;
 
 /**
- * Class for Bootstrap table
+ * This class holds the data displayed on the employee list web page and the
+ * total number of rows.
+ * 
+ * It consists of members for displaying data in the Bootstrap table.
  * 
  * @author syc0701
  *
@@ -12,6 +15,7 @@ public class RspDataTable {
 
 	private long total;
 	private long totalNotFiltered;
+	private String sortOrder;
 	private List rows;
 
 	/**
@@ -35,6 +39,19 @@ public class RspDataTable {
 		this.totalNotFiltered = totalNotFiltered;
 	}
 
+	public String getSortOrder() {
+		return sortOrder;
+	}
+
+	public void setSortOrder(String sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+
+	/**
+	 * Data rows displayed on the screen
+	 * 
+	 * @return rows
+	 */
 	public List getRows() {
 		return rows;
 	}

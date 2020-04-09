@@ -1,17 +1,25 @@
+<!-- ============================================================== -->
+<!-- 
+	Through this page, you can register or edit employees.
+
+	Date : April 6, 2020
+	Author : Youngcheol
+ -->
+<!-- ============================================================== -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:insert="fragments/template.html :: header"></div>	
- 
+<div th:insert="fragments/template.html :: header"></div>
+
 <body>
 
 	<!-- ============================================================== -->
-	<!-- main wrapper -->
+	<!-- Main Wrapper -->
 	<!-- ============================================================== -->
 	<div class="container-fluid  dashboard-content">
 
-		<div th:insert="fragments/template.html :: page-header"></div>	
-		
+		<div th:insert="fragments/template.html :: page-header"></div>
+
 		<div class="row">
 			<!-- ============================================================== -->
 			<!-- Bootstrap table  -->
@@ -41,47 +49,27 @@
 										onclick="openList();" value=" List ">
 								</div>
 
-								<input type="hidden" id="id" th:field="*{id}">
-								<input type="hidden" id="pageNumber" name="pageNumber" th:value="${pageNumber}"> 
+								<input type="hidden" id="id" th:field="*{id}"> <input type="hidden" id="pageNumber" name="pageNumber"
+									th:value="${pageNumber}">
 
 							</div>
 						</form>
-						
+
 					</div>
 				</div>
 			</div>
 			<!-- ============================================================== -->
-			<!-- End of Bootstrap table  -->
+			<!-- End of Bootstrap table -->
 			<!-- ============================================================== -->
 		</div>
 	</div>
-	
-	<div class="card-footer" th:replace="fragments/template.html :: footer"></div>	
 
-	<!-- Optional JavaScript -->
-	<script src="https://unpkg.com/jquery@3.4.1/dist/jquery.min.js"></script>
+	<div class="card-footer" th:replace="fragments/template.html :: footer"></div>
 
-	<!-- <script src="/concept/assets/vendor/jquery/jquery-3.3.1.min.js"></script> -->
-	<script src="/concept/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-	<script src="/concept/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-	<script src="/concept/assets/vendor/multi-select/js/jquery.multi-select.js"></script>
-	<script src="/concept/assets/libs/js/main-js.js"></script>
-	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-	<script src="/concept/assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-	<script src="/concept/assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
-	<script src="/concept/assets/vendor/datatables/js/data-table.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
-	<script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
-	<script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
-	<script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
-
-	<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+	<!-- ============================================================== -->
+	<!-- JQuery js files and Script files used in bootstrap table 
+	<!-- ============================================================== -->
+	<th:block th:insert="fragments/template.html :: script"></th:block>
 
 	<script>
 		function openList() {

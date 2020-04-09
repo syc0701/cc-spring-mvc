@@ -1,7 +1,17 @@
+<!-- ============================================================== -->
+<!-- 
+	These are fragments used in html pages.
+
+	Date : April 6, 2020
+	Author : Youngcheol
+ -->
+<!-- ============================================================== -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	
+	<!-- ============================================================== -->
 	<!-- Fragment for Header -->
+	<!-- ============================================================== -->
 	<head th:fragment="header">
 		<!-- Required meta tags -->
 		<meta charset="utf-8">
@@ -21,7 +31,10 @@
 		<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
 	</head>
 	
+	
+	<!-- ============================================================== -->
 	<!-- Fragment for page header -->
+	<!-- ============================================================== -->	
 	<div class="row" th:fragment="page-header">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="page-header">
@@ -30,12 +43,18 @@
 		</div>
 	</div>
 	
+	
+	<!-- ============================================================== -->
 	<!-- Fragment for card header -->
+	<!-- ============================================================== -->
 	<div th:fragment="card-header">
-		<h5 class="card-header">Spring Boot & Spring MVC & Thymeleaf</h5>
+		<h5 class="card-header">Spring Boot & Spring MVC & Bootstrap Datatable & Thymeleaf</h5>
 	</div>
 	
+	
+	<!-- ============================================================== -->
 	<!-- Fragment for footer-->	
+	<!-- ============================================================== -->
 	<div class="footer" th:fragment="footer">
          <div class="container-fluid">
              <div class="row">
@@ -52,5 +71,36 @@
              </div>
          </div>
      </div>
+     
+     
+    <!-- ============================================================== -->
+	<!-- Fragment for javascript -->	
+	<!-- ============================================================== -->
+     <th:block layout:fragment="script">
+	    <div class="card-footer" th:replace="fragments/template.html :: footer"></div>
+	
+		<script src="https://unpkg.com/jquery@3.4.1/dist/jquery.min.js"></script>
+	
+		<script src="/concept/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+		<script src="/concept/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+		<script src="/concept/assets/vendor/multi-select/js/jquery.multi-select.js"></script>
+		<script src="/concept/assets/libs/js/main-js.js"></script>
+		<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+		<script src="/concept/assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+		<script src="/concept/assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
+		<script src="/concept/assets/vendor/datatables/js/data-table.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+		<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+		<script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+		<script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+		<script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+	
+		<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+     </th:block>
      
 </html>
