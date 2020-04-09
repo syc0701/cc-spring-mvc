@@ -12,10 +12,10 @@ To run this project, docker must be installed on your system.
 
 ## Development environment
 * Java 1.8.0
+* Apache Maven 3.6.3
 * Mysql 8.0.19
 * Spring 2.2.6.RELEASE
 * Bootstrap 4.4.1
-* Apache Maven 3.6.3
 * WebJars
 * jQuery Validation 1.19.0
 
