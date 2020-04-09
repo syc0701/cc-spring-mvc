@@ -38,10 +38,9 @@
 							<!-- ${pageNumber} is to show the original page when returning to this page after data modification. -->
 							<!-- ============================================================== -->
 							<table id="table" data-toggle="table" data-search="true" data-search-on-enter-key="true" data-height="460" data-pagination="true"
-								th:attr="data-page-number=${pageNumber}" data-side-pagination="server" data-server-sort="true" 
-								data-sort-order="desc" data-sort-name="id" data-query-params="queryParams"
-								data-response-handler="responseHandler" data-url="/employees/search" data-click-to-select="true"
-								class="table table-striped table-bordered">
+								th:attr="data-page-number=${pageNumber}" data-side-pagination="server" data-server-sort="true" data-sort-order="desc"
+								data-sort-name="id" data-query-params="queryParams" data-response-handler="responseHandler" data-url="/employees/search"
+								data-click-to-select="true" class="table table-striped table-bordered">
 								<thead>
 									<tr>
 										<th data-field="id" data-sortable="true" data-sorter="idSorter">ID</th>

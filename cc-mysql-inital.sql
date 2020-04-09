@@ -1,4 +1,6 @@
--- For mysql
+/*
+ * Create database and user account in Mysql used by cc-spring-mvc project.
+ */
 
 -- Creates the new database
 CREATE database IF NOT EXISTS db_craftercodebase;

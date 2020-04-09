@@ -1,3 +1,6 @@
+/*
+ * Table schema that employees information.
+ */
 USE db_craftercodebase;
 
 DROP TABLE IF EXISTS TBL_EMPLOYEES;
@@ -10,39 +13,8 @@ CREATE TABLE TBL_EMPLOYEES (
 );
 
 INSERT INTO TBL_EMPLOYEES (first_name, last_name, email) 
-VALUES ('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('Lokesh', 'Gupta', 'howtodoinjava@gmail.com'),
-  	('John', 'Doe', 'xyz@email.com');
+VALUES ('Sample 1', 'Data', 'sample1@cc.ca'),
+('Sample 2', 'Data', 'sample2@cc.ca'),
+('Sample 3', 'Data', 'sample3@cc.ca'),
+('Sample 4', 'Data', 'sample4@cc.ca'),
+('Sample 5', 'Data', 'sample5@cc.ca');

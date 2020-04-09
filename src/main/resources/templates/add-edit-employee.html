@@ -29,28 +29,28 @@
 					<div th:insert="fragments/template :: card-header"></div>
 					<div class="card-body">
 						<!-- <div class="table-responsive"> -->
-						<form action="#" th:action="@{/employees/createEmployee}" th:object="${employee}" method="post">
+						<form id="eForm" action="#" th:action="@{/employees/createEmployee}" th:object="${employee}" method="post">
 							<div class="row">
 								<div class="form-group col-md-8">
-									<label for="name" class="col-form-label">First Name</label> <input type="text" th:field="*{firstName}" class="form-control"
-										id="firstName" placeholder="" />
+									<label for="name" class="col-form-label">First Name</label>
+									<input type="text" th:field="*{firstName}" class="form-control" id="firstName" placeholder="" />
 								</div>
 								<div class="form-group col-md-8">
-									<label for="name" class="col-form-label">Last Name</label> <input type="text" th:field="*{lastName}" class="form-control"
-										id="lastName" placeholder="" />
+									<label for="name" class="col-form-label">Last Name</label>
+									<input type="text" th:field="*{lastName}" class="form-control" id="lastName" placeholder="" />
 								</div>
 								<div class="form-group col-md-8">
-									<label for="email" class="col-form-label">Email</label> <input type="text" th:field="*{email}" class="form-control" id="email"
-										placeholder="" />
+									<label for="email" class="col-form-label">Email</label>
+									<input type="text" th:field="*{email}" class="form-control" id="email" placeholder="" />
 								</div>
 
 								<div class="col-md-6">
-									<input type="submit" class="btn btn-primary" value=" Submit "> <input type="button" class="btn btn-primary"
-										onclick="openList();" value=" List ">
+									<input type="submit" class="btn btn-primary" value=" Submit ">
+									<input type="button" class="btn btn-primary" onclick="openList();" value=" List ">
 								</div>
 
-								<input type="hidden" id="id" th:field="*{id}"> <input type="hidden" id="pageNumber" name="pageNumber"
-									th:value="${pageNumber}">
+								<input type="hidden" id="id" th:field="*{id}">
+								<input type="hidden" id="pageNumber" name="pageNumber" th:value="${pageNumber}">
 
 							</div>
 						</form>
@@ -75,6 +75,22 @@
 		function openList() {
 			location.href = "/employees/showDataTables";
 		}
+
+		/*  Validate the input values.  */
+		$("#eForm").validate({
+			rules : {
+				firstName : {
+					required : true,
+					minlength : 2,
+					maxlenght : 10,
+					email : false
+				},
+				email : {
+					required : true,
+					email : true
+				}
+			}
+		}); 
 	</script>
 
 </body>

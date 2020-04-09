@@ -1,4 +1,7 @@
-# Use root/example as user/password credentials
+# Configuration of Mysql service and Adminer service required in cc-spring-mvc project
+# You can run it with Docker-Compose.
+#
+# $ docker-compose -f cc-mysql-adminer-compose.yml up -d__
 version: '3.1'
 
 services:
