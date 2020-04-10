@@ -31,6 +31,8 @@ Because the Docker assigns different IPs to containers at execution time, it is 
 
 >__$ docker network create -d nat --subnet=172.16.1.0/24 --gateway=172.16.1.1 frontend__
 
+> On Windows, use the **-d nat** option as above, on Linux use the **-d bridge** option,
+
 ```
 $ docker network ls
 NETWORK ID          NAME                DRIVER              SCOPE
