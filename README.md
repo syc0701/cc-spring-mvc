@@ -47,58 +47,58 @@ NETWORK ID          NAME                DRIVER              SCOPE
 
 
 ## How to use it
-1. Running MySQL and Adminer service.
-
->__$ docker-compose -f cc-mysql-adminer-compose.yml up -d__
-
-1. Connect to [Adminer](http://localhost:9000) with a web browser.
-
-
-1. The 'db_craftercodebase' database and users in Mysql can be created by running the following command.
-
->__$ mysql -h 172.16.1.10 -u root -p < cc-mysql-inital.sql__
-
-```
-create database db_craftercodebase;                 
-create user 'ccuser'@'%' identified by 'ccpass';    
-grant all on db_craftercodebase.* to 'ccuser'@'%';  
-```
-    
-1. Compile and package this project to create a jar file.
-
->__$ mvn package__
-    
-1. Run the cc-spring-mvc web service
-
->__$ java -jar target\cc-spring-mvc-0.0.1-SNAPSHOT.jar__
-
-1. Access to web service.
-
->__[http://localhost:8080](http://localhost:8080)__
+	1. Running MySQL and Adminer service.
+	
+	>__$ docker-compose -f cc-mysql-adminer-compose.yml up -d__
+	
+	2. Connect to [Adminer](http://localhost:9000) with a web browser.
+	
+	
+	1. The 'db_craftercodebase' database and users in Mysql can be created by running the following command.
+	
+	>__$ mysql -h 172.16.1.10 -u root -p < cc-mysql-inital.sql__
+	
+	```
+	create database db_craftercodebase;                 
+	create user 'ccuser'@'%' identified by 'ccpass';    
+	grant all on db_craftercodebase.* to 'ccuser'@'%';  
+	```
+	
+	1. Compile and package this project to create a jar file.
+	
+	>__$ mvn package__
+	    
+	1. Run the cc-spring-mvc web service
+	
+	>__$ java -jar target\cc-spring-mvc-0.0.1-SNAPSHOT.jar__
+	
+	1. Access to web service.
+	
+	>__[http://localhost:8080](http://localhost:8080)__
 
 
 ## Optional: Create Docker Image
 	
-It is useful to test by creating a Docker image before deploying a web project. We can test that the package is working properly.
-
-1. Package the source code and resources into a jar file.
-    
->__$ mvn package__
-
-1. Creating a docker image
-
->__$ docker build -f cc-spring-mvc-docker -t cc-spring-mvc .__
-    
-
-```
-FROM openjdk:8-jdk-alpine
-COPY target/*.jar /app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
-```
-
-1. Run the web service with the created docker image
-
->__$ docker run --name cc-spring-mvc_web_1 --network frontend --rm --ip 172.16.1.20 -p 8080:8080 -t cc-spring-mvc__
+	It is useful to test by creating a Docker image before deploying a web project. We can test that the package is working properly.
+	
+	1. Package the source code and resources into a jar file.
+	    
+	>__$ mvn package__
+	
+	1. Creating a docker image
+	
+	>__$ docker build -f cc-spring-mvc-docker -t cc-spring-mvc .__
+	    
+	
+	```
+	FROM openjdk:8-jdk-alpine
+	COPY target/*.jar /app.jar
+	ENTRYPOINT ["java","-jar","/app.jar"]
+	```
+	
+	1. Run the web service with the created docker image
+	
+	>__$ docker run --name cc-spring-mvc_web_1 --network frontend --rm --ip 172.16.1.20 -p 8080:8080 -t cc-spring-mvc__
 
 
 ## Contact
