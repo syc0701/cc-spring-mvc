@@ -74,7 +74,9 @@ grant all on db_craftercodebase.* to 'ccuser'@'%';
 	
 6\. Access to web service.
 
->__[http://localhost:8080](http://localhost:8080)__
+>__http://localhost:8080__
+
+>__Click [here](http://15.223.94.55:8080/) to preview the site.__
 
 
 ## Optional: Create Docker Image
