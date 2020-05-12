@@ -1,69 +1,118 @@
-<!-- ============================================================== -->
-<!-- 
-	Shows a list of employees. Send and receive data through Ajax with the Web server.
-	Display data using bootstrap table.
-
-	Date : April 6, 2020
-	Author : Youngcheol
- -->
-<!-- ============================================================== -->
 <!doctype html>
 <html lang="en">
+
 <div th:insert="fragments/template.html :: header"></div>
 
 <body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <!-- ============================================================== -->
+        <th:block th:insert="fragments/template.html :: navbar"></th:block>
+        
+        <!-- ============================================================== -->
+        <!-- left sidebar -->
+        <!-- ============================================================== -->
+        <th:block th:insert="fragments/template.html :: left-sidebar"></th:block>
+        
+        <!-- ============================================================== -->
+        <!-- end left sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="container-fluid dashboard-content">
+               
 
-	<!-- ============================================================== -->
-	<!-- main wrapper -->
-	<!-- ============================================================== -->
-	<div class="container-fluid  dashboard-content">
-
-		<div th:insert="fragments/template.html :: page-header"></div>
-
-		<div class="row">
-			<!-- ============================================================== -->
-			<!-- Bootstrap table  -->
-			<!-- ============================================================== -->
-			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-				<div class="card">
-					<div th:insert="fragments/template :: card-header"></div>
-					<div class="card-body">
-						<div class="table-responsive">
-							<div id="toolbar">
-								<button id="remove" class="btn btn-primary" onclick="openAddPage();">
-									<i class="glyphicon glyphicon-remove"></i> Add Employee
-								</button>
+                 <div class="row">
+                     <div class="col-xl-10">
+                         <!-- ============================================================== -->
+                         <!-- pageheader -->
+                         <!-- ============================================================== -->
+                         <div class="row">
+                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                 <div class="page-header" id="top">
+                                     <h2 class="pageheader-title">TEST</h2>
+                                     <p class="pageheader-text">for testing</p>
+                                     <div class="page-breadcrumb">
+                                         <nav aria-label="breadcrumb">
+                                             <ol class="breadcrumb">
+                                                 <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Features</a></li>
+                                                 <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Pages</a></li>
+                                                 <li class="breadcrumb-item active" aria-current="page">Employees Table</li>
+                                             </ol>
+                                         </nav>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <!-- ============================================================== -->
+                         <!-- end pageheader -->
+                         <!-- ============================================================== -->
+                 	</div>      
+                 </div>
+                 
+                <div class="row">
+					<!-- ============================================================== -->
+					<!-- Bootstrap table  -->
+					<!-- ============================================================== -->
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<div class="card">
+							<div th:insert="fragments/template :: card-header"></div>
+							<div class="card-body">
+								<div class="table-responsive">
+									<div id="toolbar">
+										<button id="remove" class="btn btn-primary" onclick="openAddPage();">
+											<i class="glyphicon glyphicon-remove"></i> Add Employee
+										</button>
+									</div>
+									<!-- ============================================================== -->
+									<!-- ${pageNumber} is to show the original page when returning to this page after data modification. -->
+									<!-- ============================================================== -->
+									<table id="table" data-toggle="table" data-search="true" data-search-on-enter-key="true" data-height="460" data-pagination="true"
+										th:attr="data-page-number=${pageNumber}" data-side-pagination="server" data-server-sort="true" data-sort-order="desc"
+										data-sort-name="id" data-query-params="queryParams" data-response-handler="responseHandler" data-url="/employees/search"
+										data-click-to-select="true" class="table table-striped table-bordered">
+										<thead>
+											<tr>
+												<th data-field="id" data-sortable="true" data-sorter="idSorter">ID</th>
+												<th data-field="firstName">First Name</th>
+												<th data-field="lastName">Last Name</th>
+												<th data-field="email">Email</th>
+												<th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">Operate</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
 							</div>
-							<!-- ============================================================== -->
-							<!-- ${pageNumber} is to show the original page when returning to this page after data modification. -->
-							<!-- ============================================================== -->
-							<table id="table" data-toggle="table" data-search="true" data-search-on-enter-key="true" data-height="460" data-pagination="true"
-								th:attr="data-page-number=${pageNumber}" data-side-pagination="server" data-server-sort="true" data-sort-order="desc"
-								data-sort-name="id" data-query-params="queryParams" data-response-handler="responseHandler" data-url="/employees/search"
-								data-click-to-select="true" class="table table-striped table-bordered">
-								<thead>
-									<tr>
-										<th data-field="id" data-sortable="true" data-sorter="idSorter">ID</th>
-										<th data-field="firstName">First Name</th>
-										<th data-field="lastName">Last Name</th>
-										<th data-field="email">Email</th>
-										<th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">Operate</th>
-									</tr>
-								</thead>
-							</table>
 						</div>
 					</div>
+					<!-- ============================================================== -->
+					<!-- End of Bootstrap table  -->
+					<!-- ============================================================== -->
 				</div>
-			</div>
-			<!-- ============================================================== -->
-			<!-- End of Bootstrap table  -->
-			<!-- ============================================================== -->
-		</div>
-	</div>
-
-	<div class="card-footer" th:replace="fragments/template.html :: footer"></div>
-
-	<!-- ============================================================== -->
+                             
+            </div>
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <th:block th:insert="fragments/template.html :: footer"></th:block>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <!-- <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <script src="../assets/libs/js/main-js.js"></script> -->
+    
+    <!-- ============================================================== -->
 	<!-- JQuery js files and Script files used in bootstrap table 
 	<!-- ============================================================== -->
 	<th:block th:insert="fragments/template.html :: script"></th:block>
@@ -108,8 +157,7 @@
 				/* alert('You click edit action, row: ' + JSON.stringify(row)) */
 				var pageNumber = $table.bootstrapTable('getOptions').pageNumber;
 
-				location.href = "/employees/edit/" + row.id + "/pageNumber/"
-						+ pageNumber;
+				location.href = "/employees/edit/" + row.id + "/" + pageNumber;
 			},
 			'click .remove' : function(e, value, row, index) {
 
@@ -174,7 +222,6 @@
 			location.href = "/employees/add";
 		}
 	</script>
-
 </body>
-
+ 
 </html>

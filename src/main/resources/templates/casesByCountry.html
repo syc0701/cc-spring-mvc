@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+
+<div th:insert="fragments/template.html :: header"></div>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- main wrapper -->
+	<!-- ============================================================== -->
+	<div class="dashboard-main-wrapper">
+		<!-- ============================================================== -->
+		<!-- navbar -->
+		<!-- ============================================================== -->
+		<th:block th:insert="fragments/template.html :: navbar"></th:block>
+
+		<!-- ============================================================== -->
+		<!-- left sidebar -->
+		<!-- ============================================================== -->
+		<th:block th:insert="fragments/template.html :: left-sidebar"></th:block>
+
+		<!-- ============================================================== -->
+		<!-- wrapper  -->
+		<!-- ============================================================== -->
+		<div class="dashboard-wrapper">
+			<div class="container-fluid dashboard-content">
+				<div class="row">
+
+					 <!-- ============================================================== -->
+                     <!-- pageheader -->
+                     <!-- ============================================================== -->
+                     <div class="row">
+                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                             <div class="page-header" id="top">
+                                 <h2 class="pageheader-title">Cases by country</h2>
+                                 <p class="pageheader-text">This page shows global trend.</p>
+                                 <div class="page-breadcrumb">
+                                     <nav aria-label="breadcrumb">
+                                         <ol class="breadcrumb">
+                                             <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Covid 19</a></li>
+                                             <li class="breadcrumb-item active" aria-current="page">Cases by country</li>
+                                         </ol>
+                                     </nav>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <!-- ============================================================== -->
+                     <!-- end pageheader -->
+                     <!-- ============================================================== -->
+                            
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						
+						<div style="float: left; width: 25%; height: 400px;">
+						<h3 class="text-left">
+							<p class="country_name">Canada</p>
+						</h3>
+						
+							<select class="selectpicker" id="select1" onchange="changeCountry()" size="25">
+							</select>
+						</div>
+
+						<div id="main" style="float: left; width: 75%; height: 550px;"></div>
+					</div>
+				</div>
+				
+				<!-- ============================================================== -->
+				<!-- caution -->
+				<!-- ============================================================== -->
+				<th:block th:insert="fragments/template.html :: caution"></th:block>
+                       </div>
+                </div>
+			</div>
+			<!-- ============================================================== -->
+			<!-- footer -->
+			<!-- ============================================================== -->
+			<th:block th:insert="fragments/template.html :: footer"></th:block>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- end main wrapper -->
+	<!-- ============================================================== -->
+
+	<!-- ============================================================== -->
+	<!-- JQuery js files and Script files used in bootstrap table 
+	<!-- ============================================================== -->
+	<th:block th:insert="fragments/template.html :: script"></th:block>
+
+	<script type="text/javascript">
+		var chart = echarts.init(document.getElementById('main'));
+
+		chart.setOption({
+			tooltip : {
+				trigger : 'axis',
+				axisPointer : {
+					type : 'shadow',
+					label : {
+						show : true
+					}
+				}
+			},
+			toolbox : {
+				show : true,
+				feature : {
+					mark : {
+						show : true
+					},
+					dataView : {
+						show : true,
+						readOnly : false
+					},
+					magicType : {
+						show : true,
+						type : [ 'line', 'bar' ]
+					},
+					restore : {
+						show : true
+					},
+					saveAsImage : {
+						show : true
+					}
+				}
+			},
+			calculable : true,
+			legend : {
+				data : [ 'Growth', 'Total Cases', 'Total Deaths', 'New Cases',
+						'New Deaths', 'New Tests' ],
+				itemGap : 5,
+				selected : {
+					'Total Cases' : true,
+					'Total Death' : true,
+					'New Cases' : true,
+					'New Deaths' : true,
+					'New Tests' : false
+				}
+			},
+			grid : {
+				top : '12%',
+				left : '1%',
+				right : '10%',
+				containLabel : true
+			},
+			xAxis : [ {
+				type : 'category',
+				data : []
+			} ],
+			yAxis : [ {
+				type : 'value',
+				//name : 'People (million)',
+				name : 'People',
+				axisLabel : {
+					formatter : function(a) {
+						a = +a;
+						return isFinite(a)
+						//? echarts.format.addCommas(+a / 1000)
+						? echarts.format.addCommas(+a) : '';
+					}
+				}
+			} ],
+			dataZoom : [ {
+				show : true,
+				start : 70,
+				end : 100
+			}, {
+				type : 'inside',
+				start : 70,
+				end : 100
+			}, {
+				show : true,
+				yAxisIndex : 0,
+				filterMode : 'empty',
+				width : 30,
+				height : '80%',
+				showDataShadow : false,
+				left : '93%'
+			} ],
+			series : [ {
+				name : 'Total Cases',
+				type : 'line',
+				data : []
+			}, {
+				name : 'Total Deaths',
+				type : 'line',
+				data : []
+			}, {
+				name : 'New Cases',
+				type : 'bar',
+				data : []
+			}, {
+				name : 'New Deaths',
+				type : 'bar',
+				data : []
+			}, {
+				name : 'New Tests',
+				type : 'bar',
+				data : []
+			} ]
+
+		});
+
+		chart.showLoading();
+
+		$.getJSON('/stats/getAllCountries', function(data) {
+			console.log(data);
+
+			var codes = _.toArray(data.iso_code).slice(1);
+			var locations = _.toArray(data.location).slice(1);
+
+			var entities = _.zip(codes, locations);
+
+			_.each(entities, function(row) {
+				if (row[0] == 'CAN') {
+					$('#select1').append(
+							'<option value="' + row[0] +'" selected> ' + row[1]
+									+ ' </option>');
+				} else {
+					$('#select1').append(
+							'<option value="' + row[0] +'"> ' + row[1]
+									+ ' </option>');
+				}
+			})
+
+		});
+
+		// In the beginning
+		$.getJSON('/stats/getCases/CAN',  function drawChart(data) {
+			console.log(data);
+
+			chart.hideLoading();
+
+			option = {
+				xAxis : [ {
+					type : 'category',
+					data : data.names
+				} ],
+				series : [ {
+					name : 'Total Cases',
+					type : 'line',
+					data : data.totalCases
+				}, {
+					name : 'Total Deaths',
+					type : 'line',
+					data : data.totalDeaths
+				}, {
+					name : 'New Cases',
+					type : 'bar',
+					data : data.newCases
+				}, {
+					name : 'New Deaths',
+					type : 'bar',
+					data : data.newDeaths
+				}, {
+					name : 'New Tests',
+					type : 'bar',
+					data : data.newTests
+				} ]
+			};
+
+			chart.setOption(option);
+		}  );
+
+		function changeCountry() {
+			var iso_code = $('#select1').val();
+
+			$('.country_name').text($('#select1 option:selected').text());
+			$.getJSON('/stats/getCases/' + iso_code, function (data) {
+				drawChart(data);
+			});
+		}
+		
+		// processing datas
+		function drawChart(data) {
+
+			console.log(data);
+
+			chart.hideLoading();
+
+			option = {
+				xAxis : [ {
+					type : 'category',
+					data : data.names
+				} ],
+				series : [ {
+					name : 'Total Cases',
+					type : 'line',
+					data : data.totalCases
+				}, {
+					name : 'Total Deaths',
+					type : 'line',
+					data : data.totalDeaths
+				}, {
+					name : 'New Cases',
+					type : 'bar',
+					data : data.newCases
+				}, {
+					name : 'New Deaths',
+					type : 'bar',
+					data : data.newDeaths
+				}, {
+					name : 'New Tests',
+					type : 'bar',
+					data : data.newTests
+				} ]
+			};
+
+			chart.setOption(option);
+
+		}
+	</script>
+</body>
+
+</html>
+

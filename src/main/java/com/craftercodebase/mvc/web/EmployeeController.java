@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.craftercodebase.mvc.exception.RecordNotFoundException;
+import com.craftercodebase.common.exception.RecordNotFoundException;
 import com.craftercodebase.mvc.model.EmployeeEntity;
 import com.craftercodebase.mvc.service.EmployeeService;
 
@@ -54,7 +54,7 @@ public class EmployeeController {
 		return "add-edit-employee";
 	}
 
-	@RequestMapping(path = { "/edit", "/edit/{id}/pageNumber/{pageNumber}" })
+	@RequestMapping(path = { "/edit", "/edit/{id}/{pageNumber}" })
 	public String editEmployeeById(Model model, @PathVariable("id") Optional<Long> id,
 			@PathVariable("pageNumber") Optional<Long> pageNumber) throws RecordNotFoundException {
 
@@ -85,7 +85,8 @@ public class EmployeeController {
 		service.createOrUpdateEmployee(employee);
 		model.addAttribute("pageNumber", pageNumber.get());
 
-		return "redirect:/";
+		//return "redirect:/";
+		return "list-employees";
 	}
 
 }

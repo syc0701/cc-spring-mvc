@@ -1,7 +1,7 @@
 # Configuration of Mysql service and Adminer service required in cc-spring-mvc project
 # You can run it with Docker-Compose.
 #
-# $ docker-compose -f cc-mysql-adminer-compose.yml up -d__
+# $ docker-compose -f cc-mysql-adminer-compose.yml up -d
 version: '3.1'
 
 services:

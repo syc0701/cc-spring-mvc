@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.craftercodebase.mvc.exception.RecordNotFoundException;
+import com.craftercodebase.common.exception.RecordNotFoundException;
 import com.craftercodebase.mvc.model.EmployeeEntity;
 import com.craftercodebase.mvc.repository.EmployeeRepository;
 

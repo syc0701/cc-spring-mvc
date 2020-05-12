@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+
+<div th:insert="fragments/template.html :: header"></div>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <!-- ============================================================== -->
+        <th:block th:insert="fragments/template.html :: navbar"></th:block>
+         
+        <!-- ============================================================== -->
+        <!-- left sidebar -->
+        <!-- ============================================================== -->
+        <th:block th:insert="fragments/template.html :: left-sidebar"></th:block>
+        
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="container-fluid dashboard-content">
+               
+
+                    <div class="row">
+                        <div class="col-xl-10">
+                            <!-- ============================================================== -->
+                            <!-- pageheader -->
+                            <!-- ============================================================== -->
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="page-header" id="top">
+                                        <h2 class="pageheader-title">Global</h2>
+                                        <p class="pageheader-text">This page shows global trend.</p>
+                                        <div class="page-breadcrumb">
+                                            <nav aria-label="breadcrumb">
+                                                <ol class="breadcrumb">
+                                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Covid 19</a></li>
+                                                    <li class="breadcrumb-item active" aria-current="page">World</li>
+                                                </ol>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ============================================================== -->
+                            <!-- end pageheader -->
+                            <!-- ============================================================== -->
+                            
+                             <div class="row">
+                             
+								<!-- ============================================================== -->
+								<!-- Bootstrap table  -->
+								<!-- ============================================================== -->
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<div class="card">
+					
+										<div class="card-body">
+											<div class="table-responsive">
+												
+												<!-- ============================================================== -->
+												<!-- ${pageNumber} is to show the original page when returning to this page after data modification. -->
+												<!-- ============================================================== -->
+												<table id="table" data-toggle="table" data-search="true" data-search-on-enter-key="false" data-height="560" data-pagination="true"
+													th:attr="data-page-number=${pageNumber}" data-side-pagination="server" data-server-sort="true" data-query-params="queryParams"
+													data-page-size="40" data-response-handler="responseHandler" data-url="/stats/search" data-click-to-select="true"
+													class="table table-bordered">
+													<thead>
+														<tr>
+															<th data-field="ranking">Number</th>
+															<th data-field="iso_code">ISO Code</th>
+															<th data-field="location">Country</th>
+															<th data-field="reported_date" data-formatter="dateFormatter">Date</th>
+															<th data-field="total_cases" data-formatter="numFormatter" data-align="right">Total Cases</th>
+															<th data-field="new_cases" data-formatter="numFormatter" data-align="right">New Cases</th>
+															<th data-field="new_deaths" data-formatter="numFormatter" data-align="right">New Deaths</th>
+															<th data-field="total_deaths" data-formatter="numFormatter" data-align="right">Total Deaths</th>
+														</tr>
+													</thead>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- ============================================================== -->
+								<!-- End of Bootstrap table  -->
+								<!-- ============================================================== -->
+							</div>
+                             
+                        </div>
+                    </div>
+            	<!-- ============================================================== -->
+				<!-- caution -->
+				<!-- ============================================================== -->
+				<th:block th:insert="fragments/template.html :: caution"></th:block>
+                       </div>
+                </div>
+            
+            </div>
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <th:block th:insert="fragments/template.html :: footer"></th:block>
+            
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+
+    
+    <!-- ============================================================== -->
+	<!-- JQuery js files and Script files used in bootstrap table 
+	<!-- ============================================================== -->
+	<th:block th:insert="fragments/template.html :: script"></th:block>
+
+	<script>
+		var $table = $('#table')
+		var $remove = $('#remove')
+		var selections = []
+
+		function getIdSelections() {
+			return $.map($table.bootstrapTable('getSelections'), function(row) {
+				return row.id
+			})
+		}
+
+		function queryParams(params) {
+			// do something  
+			return params
+		}
+
+		function responseHandler(res) {
+			if ($('#table').bootstrapTable('getOptions').sortOrder === 'desc') {
+				res.rows = res.rows.reverse()
+			}
+			return res
+		}
+
+		function idSorter(a, b) {
+			//do something
+		}
+		function operateFormatter(value, row, index) {
+			return [
+					'<a class="edit" href="javascript:void(0)" title="Edit">',
+					'<i class="fa fa-edit"></i>',
+					'</a>&ensp;',
+					'<a class="remove" href="javascript:void(0)" title="Remove">',
+					'<i class="fa fa-trash"></i>', '</a>' ].join('')
+		}
+
+		function initTable() {
+
+			$table.on('check.bs.table uncheck.bs.table '
+					+ 'check-all.bs.table uncheck-all.bs.table', function() {
+				$remove.prop('disabled', !$table
+						.bootstrapTable('getSelections').length)
+
+				// save your data, here just save the current page
+				selections = getIdSelections()
+				// push or splice the selections if you want to save all data selections
+			})
+			$table.on('all.bs.table', function(e, name, args) {
+				console.log(name, args)
+			})
+			$remove.click(function() {
+				var ids = getIdSelections()
+				$table.bootstrapTable('remove', {
+					field : 'id',
+					values : ids
+				})
+				$remove.prop('disabled', true)
+			})
+
+		}
+
+		$(function() {
+			initTable()
+
+			$('#locale').change(initTable)
+		})
+
+		function openAddPage() {
+			location.href = "/employees/add";
+		}
+
+		function dateFormatter(value, row) {
+			return value.substring(0, 10);
+		}
+
+		function numFormatter(value, row) {
+			var number = numeral(value);
+			return number.format('0,0');
+		}
+	</script>
+</body>
+ 
+</html>

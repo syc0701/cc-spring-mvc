@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+
+<div th:insert="fragments/template.html :: header"></div>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- main wrapper -->
+	<!-- ============================================================== -->
+	<div class="dashboard-main-wrapper">
+		<!-- ============================================================== -->
+		<!-- navbar -->
+		<!-- ============================================================== -->
+		<th:block th:insert="fragments/template.html :: navbar"></th:block>
+
+		<!-- ============================================================== -->
+		<!-- left sidebar -->
+		<!-- ============================================================== -->
+		<th:block th:insert="fragments/template.html :: left-sidebar"></th:block>
+
+		<!-- ============================================================== -->
+		<!-- wrapper  -->
+		<!-- ============================================================== -->
+		<div class="dashboard-wrapper">
+			<div class="container-fluid dashboard-content">
+				<div class="row">
+
+					<!-- ============================================================== -->
+					<!-- pageheader -->
+					<!-- ============================================================== -->
+					<div class="row">
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+							<div class="page-header" id="top">
+								<h2 class="pageheader-title">On The Map</h2>
+								<p class="pageheader-text">This page shows global trend.</p>
+								<div class="page-breadcrumb">
+									<nav aria-label="breadcrumb">
+										<ol class="breadcrumb">
+											<li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Covid 19</a></li>
+											<li class="breadcrumb-item active" aria-current="page">on the map</li>
+										</ol>
+									</nav>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- ============================================================== -->
+					<!-- end pageheader -->
+					<!-- ============================================================== -->
+
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<div id="regions_div" style="width: 900px; height: 500px;"></div>
+					</div>
+					<!-- ============================================================== -->
+					<!-- caution -->
+					<!-- ============================================================== -->
+					<th:block th:insert="fragments/template.html :: caution"></th:block>
+				</div>
+			</div>
+			<!-- ============================================================== -->
+			<!-- footer -->
+			<!-- ============================================================== -->
+			<th:block th:insert="fragments/template.html :: footer"></th:block>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- end main wrapper -->
+	<!-- ============================================================== -->
+
+	<!-- ============================================================== -->
+	<!-- JQuery js files and Script files used in bootstrap table 
+	<!-- ============================================================== -->
+	<th:block th:insert="fragments/template.html :: script"></th:block>
+
+	<script type="text/javascript">
+		var jsonData = [];
+
+		$.getJSON('/stats/getMapData', function(data) {
+			console.log(data);
+
+			var arrLabel = [];
+			data.labels.forEach(function(row) {
+				arrLabel.push(row);
+			});
+
+			jsonData.push(arrLabel);
+
+			var arrRow = [];
+			data.countries.forEach(function(row) {
+				arrRow.push(row.countryName);
+
+				row.values.forEach(function(r1) {
+					arrRow.push(r1);
+				});
+
+				jsonData.push(arrRow);
+				arrRow = [];
+			});
+
+		});
+
+		google.charts.load('current', {
+			'packages' : [ 'geochart' ],
+			'mapsApiKey' : 'AIzaSyAfiqqgBlehlTz9AZIvZMpho7-eWE24uYw'
+		});
+		google.charts.setOnLoadCallback(drawRegionsMap);
+
+		function drawRegionsMap() {
+
+			var data = google.visualization.arrayToDataTable(jsonData);
+			var options = {
+			        sizeAxis: { minValue: 0, maxValue: 100 },
+			        colorAxis: {colors: ['#faf1eb', '#7a2828']} 
+			};
+
+			var chart = new google.visualization.GeoChart(document
+					.getElementById('regions_div'));
+
+			chart.draw(data, options);
+		}
+	</script>
+</body>
+
+</html>
+
+
