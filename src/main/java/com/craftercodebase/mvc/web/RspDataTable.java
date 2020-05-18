@@ -13,10 +13,19 @@ import java.util.List;
  */
 public class RspDataTable {
 
+	private long startNo;
 	private long total;
 	private long totalNotFiltered;
 	private String sortOrder;
 	private List rows;
+
+	public long getStartNo() {
+		return startNo;
+	}
+
+	public void setStartNo(long startNo) {
+		this.startNo = startNo;
+	}
 
 	/**
 	 * Total number of data

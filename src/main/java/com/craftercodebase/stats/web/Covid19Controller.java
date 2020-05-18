@@ -1,8 +1,11 @@
 package com.craftercodebase.stats.web;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.craftercodebase.mvc.web.RspDataTable;
+import com.craftercodebase.mvc.web.RspDataTableRow;
+import com.craftercodebase.stats.excel.ExcelData;
 import com.craftercodebase.stats.json.ChartCTData;
 import com.craftercodebase.stats.json.ChartCTData.Datas;
 import com.craftercodebase.stats.json.ChartData;
@@ -30,6 +35,10 @@ import com.craftercodebase.stats.json.CountryEntity;
 import com.craftercodebase.stats.model.Covid19Entity;
 import com.craftercodebase.stats.model.PieChartEntity;
 import com.craftercodebase.stats.service.Covid19Service;
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
 @Controller
 @RequestMapping("/stats")
@@ -53,13 +62,36 @@ public class Covid19Controller {
 
 		Page<Covid19Entity> result = service.searchCountries(search, sort, order, offset, limit);
 
-		RspDataTable entity = new RspDataTable();
-		entity.setTotalNotFiltered(result.getTotalElements());
-		entity.setTotal(result.getTotalElements());
-		entity.setRows(result.getContent());
-		entity.setSortOrder(order);
+		RspDataTable rsp = new RspDataTable();
 
-		return entity;
+		int startNo = (40 * result.getNumber()) + 1;
+
+		rsp.setStartNo(startNo);
+		rsp.setTotalNotFiltered(result.getTotalElements());
+		rsp.setTotal(result.getTotalElements());
+
+		ArrayList<RspDataTableRow> rows = new ArrayList<RspDataTableRow>();
+		for (Covid19Entity entity : result) {
+
+			RspDataTableRow row = new RspDataTableRow();
+			row.setRanking(startNo++);
+			row.setIso_code(entity.getIso_code());
+			row.setLocation(entity.getLocation());
+			row.setReported_date(entity.getReported_date());
+			row.setTotal_cases(entity.getTotal_cases());
+			row.setNew_cases(entity.getNew_cases());
+			row.setNew_deaths(entity.getNew_deaths());
+			row.setTotal_deaths(entity.getTotal_deaths());
+
+			rows.add(row);
+		}
+
+		rsp.setRows(rows);
+		// rsp.setRows(result.getContent());
+
+		rsp.setSortOrder(order);
+
+		return rsp;
 	}
 
 	@GetMapping(value = "/casesByCountry")
@@ -272,9 +304,6 @@ public class Covid19Controller {
 	public @ResponseBody ChatDataForMap getMapData(Model model) {
 		ChatDataForMap cData = new ChatDataForMap();
 
-		
-		
-		
 		ArrayList<String> c = new ArrayList<String>();
 		c.add("Country");
 		c.add("Total Cases");
@@ -284,32 +313,78 @@ public class Covid19Controller {
 
 		List<DataForMap> countries = new ArrayList<DataForMap>();
 
-		/*
-		DataForMap d1 = cData.new DataForMap();
-		d1.setCountryName("Germany");
-		d1.setValues(10, 20);
-
-		DataForMap d2 = cData.new DataForMap();
-		d2.setCountryName("Brazil");
-		d2.setValues(120, 20);
-		*/
-		
 		List<PieChartEntity> resultSet = service.searchCasesForMap();
 		resultSet.forEach(row -> {
 			DataForMap d1 = cData.new DataForMap();
 			d1.setCountryName(row.getLocation());
 			d1.setValues(row.getTotal_cases(), row.getTotal_deaths());
-			
-			
+
 			countries.add(d1);
 		});
-		
-		
 
 		cData.setCountries(countries);
 
 		return cData;
 	}
- 
-}
 
+	@GetMapping(value = "/showBatch")
+	public String showBatch() {
+		return "batch";
+	}
+
+	@GetMapping("/batchProcess")
+	public @ResponseBody String testCase1() {
+		long processingTime = 0L;
+
+		try {
+			CsvMapper mapper = new CsvMapper();
+			mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
+			CsvSchema schema = CsvSchema.builder()
+					.addColumn("iso_code", CsvSchema.ColumnType.STRING)
+					.addColumn("location", CsvSchema.ColumnType.STRING)
+					.addColumn("date", CsvSchema.ColumnType.STRING)
+					.addColumn("total_cases", CsvSchema.ColumnType.NUMBER)
+					.addColumn("new_cases", CsvSchema.ColumnType.NUMBER)
+					.addColumn("total_deaths", CsvSchema.ColumnType.NUMBER)
+					.addColumn("new_deaths", CsvSchema.ColumnType.NUMBER)
+					.addColumn("total_cases_per_million", CsvSchema.ColumnType.NUMBER)
+					.addColumn("new_cases_per_million", CsvSchema.ColumnType.NUMBER)
+					.addColumn("total_deaths_per_million", CsvSchema.ColumnType.NUMBER)
+					.addColumn("new_deaths_per_million", CsvSchema.ColumnType.NUMBER)
+					.addColumn("total_tests", CsvSchema.ColumnType.NUMBER)
+					.addColumn("new_tests", CsvSchema.ColumnType.NUMBER)
+					.addColumn("total_tests_per_thousand", CsvSchema.ColumnType.NUMBER)
+					.addColumn("new_tests_per_thousand", CsvSchema.ColumnType.NUMBER)
+					.addColumn("tests_units", CsvSchema.ColumnType.STRING)
+					.addColumn("population", CsvSchema.ColumnType.NUMBER)
+					.addColumn("population_density", CsvSchema.ColumnType.NUMBER)
+					.addColumn("median_age", CsvSchema.ColumnType.NUMBER)
+					.addColumn("aged_65_older", CsvSchema.ColumnType.NUMBER)
+					.addColumn("aged_70_older", CsvSchema.ColumnType.NUMBER)
+					.addColumn("gdp_per_capita", CsvSchema.ColumnType.NUMBER)
+					.addColumn("extreme_poverty", CsvSchema.ColumnType.NUMBER)
+					.addColumn("cvd_death_rate", CsvSchema.ColumnType.NUMBER)
+					.addColumn("diabetes_prevalence", CsvSchema.ColumnType.NUMBER)
+					.addColumn("female_smokers", CsvSchema.ColumnType.NUMBER)
+					.addColumn("male_smokers", CsvSchema.ColumnType.NUMBER)
+					.addColumn("handwashing_facilities", CsvSchema.ColumnType.NUMBER)
+					.addColumn("hospital_beds_per_100k", CsvSchema.ColumnType.NUMBER)
+					.build().withHeader();
+
+			File csvFile = new File("D:\\canada\\cc-ref\\covid-19-data\\public\\data\\owid-covid-data.csv");
+			long start = new Date().getTime();
+
+			MappingIterator<ExcelData> excelData = mapper.readerFor(ExcelData.class).with(schema).readValues(csvFile);
+			service.batch(excelData);
+
+			processingTime = new Date().getTime() - start;
+			log.debug("processingTime=" + processingTime);
+
+		} catch (IOException e) {
+			log.error(e.getMessage(), e.getCause());
+		}
+
+		return "Server-Success (" + processingTime + " ms)";
+	}
+
+}

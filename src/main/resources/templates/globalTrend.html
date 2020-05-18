@@ -1,118 +1,118 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:insert="fragments/template.html :: header"></div>
 
 <body>
-    <!-- ============================================================== -->
-    <!-- main wrapper -->
-    <!-- ============================================================== -->
-    <div class="dashboard-main-wrapper">
-        <!-- ============================================================== -->
-        <!-- navbar -->
-        <!-- ============================================================== -->
-        <th:block th:insert="fragments/template.html :: navbar"></th:block>
-         
-        <!-- ============================================================== -->
-        <!-- left sidebar -->
-        <!-- ============================================================== -->
-        <th:block th:insert="fragments/template.html :: left-sidebar"></th:block>
-        
-        <!-- ============================================================== -->
-        <!-- wrapper  -->
-        <!-- ============================================================== -->
-        <div class="dashboard-wrapper">
-            <div class="container-fluid dashboard-content">
-               
+	<!-- ============================================================== -->
+	<!-- main wrapper -->
+	<!-- ============================================================== -->
+	<div class="dashboard-main-wrapper">
+		<!-- ============================================================== -->
+		<!-- navbar -->
+		<!-- ============================================================== -->
+		<th:block th:insert="fragments/template.html :: navbar"></th:block>
 
-                    <div class="row">
-                        <div class="col-xl-10">
-                            <!-- ============================================================== -->
-                            <!-- pageheader -->
-                            <!-- ============================================================== -->
-                            <div class="row">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="page-header" id="top">
-                                        <h2 class="pageheader-title">Global</h2>
-                                        <p class="pageheader-text">This page shows global trend.</p>
-                                        <div class="page-breadcrumb">
-                                            <nav aria-label="breadcrumb">
-                                                <ol class="breadcrumb">
-                                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Covid 19</a></li>
-                                                    <li class="breadcrumb-item active" aria-current="page">World</li>
-                                                </ol>
-                                            </nav>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- ============================================================== -->
-                            <!-- end pageheader -->
-                            <!-- ============================================================== -->
-                            
-                             <div class="row">
-                             
-								<!-- ============================================================== -->
-								<!-- Bootstrap table  -->
-								<!-- ============================================================== -->
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-									<div class="card">
-					
-										<div class="card-body">
-											<div class="table-responsive">
-												
-												<!-- ============================================================== -->
-												<!-- ${pageNumber} is to show the original page when returning to this page after data modification. -->
-												<!-- ============================================================== -->
-												<table id="table" data-toggle="table" data-search="true" data-search-on-enter-key="false" data-height="560" data-pagination="true"
-													th:attr="data-page-number=${pageNumber}" data-side-pagination="server" data-server-sort="true" data-query-params="queryParams"
-													data-page-size="40" data-response-handler="responseHandler" data-url="/stats/search" data-click-to-select="true"
-													class="table table-bordered">
-													<thead>
-														<tr>
-															<th data-field="ranking">Number</th>
-															<th data-field="iso_code">ISO Code</th>
-															<th data-field="location">Country</th>
-															<th data-field="reported_date" data-formatter="dateFormatter">Date</th>
-															<th data-field="total_cases" data-formatter="numFormatter" data-align="right">Total Cases</th>
-															<th data-field="new_cases" data-formatter="numFormatter" data-align="right">New Cases</th>
-															<th data-field="new_deaths" data-formatter="numFormatter" data-align="right">New Deaths</th>
-															<th data-field="total_deaths" data-formatter="numFormatter" data-align="right">Total Deaths</th>
-														</tr>
-													</thead>
-												</table>
-											</div>
+		<!-- ============================================================== -->
+		<!-- left sidebar -->
+		<!-- ============================================================== -->
+		<th:block th:insert="fragments/template.html :: left-sidebar"></th:block>
+
+		<!-- ============================================================== -->
+		<!-- wrapper  -->
+		<!-- ============================================================== -->
+		<div class="dashboard-wrapper">
+			<div class="container-fluid dashboard-content">
+
+
+				<div class="row">
+					<div class="col-xl-10">
+						<!-- ============================================================== -->
+						<!-- pageheader -->
+						<!-- ============================================================== -->
+						<div class="row">
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+								<div class="page-header" id="top">
+									<h2 class="pageheader-title">Global</h2>
+									<p class="pageheader-text">This page shows global trend.</p>
+									<div class="page-breadcrumb">
+										<nav aria-label="breadcrumb">
+											<ol class="breadcrumb">
+												<li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Covid 19</a></li>
+												<li class="breadcrumb-item active" aria-current="page">World</li>
+											</ol>
+										</nav>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- ============================================================== -->
+						<!-- end pageheader -->
+						<!-- ============================================================== -->
+
+						<div class="row">
+
+							<!-- ============================================================== -->
+							<!-- Bootstrap table  -->
+							<!-- ============================================================== -->
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+								<div class="card">
+
+									<div class="card-body">
+										<div class="table-responsive">
+
+											<!-- ============================================================== -->
+											<!-- ${pageNumber} is to show the original page when returning to this page after data modification. -->
+											<!-- ============================================================== -->
+											<table id="table" data-toggle="table" data-search="true" data-search-on-enter-key="false" data-height="560"
+												data-pagination="true" th:attr="data-page-number=${pageNumber}" data-side-pagination="server" data-server-sort="true"
+												data-query-params="queryParams" data-page-size="40" data-response-handler="responseHandler" data-url="/stats/search"
+												data-click-to-select="true" class="table table-bordered">
+												<thead>
+													<tr>
+														<th data-field="ranking">Number</th>
+														<th data-field="iso_code">ISO Code</th>
+														<th data-field="location">Country</th>
+														<th data-field="reported_date" data-formatter="dateFormatter">Date</th>
+														<th data-field="total_cases" data-formatter="numFormatter" data-align="right">Total Cases</th>
+														<th data-field="total_deaths" data-formatter="numFormatter" data-align="right">Total Deaths</th>
+														<th data-field="new_cases" data-formatter="numFormatter" data-align="right">New Cases</th>
+														<th data-field="new_deaths" data-formatter="numFormatter" data-align="right">New Deaths</th>
+													</tr>
+												</thead>
+											</table>
 										</div>
 									</div>
 								</div>
-								<!-- ============================================================== -->
-								<!-- End of Bootstrap table  -->
-								<!-- ============================================================== -->
 							</div>
-                             
-                        </div>
-                    </div>
-            	<!-- ============================================================== -->
+							<!-- ============================================================== -->
+							<!-- End of Bootstrap table  -->
+							<!-- ============================================================== -->
+						</div>
+
+					</div>
+				</div>
+				<!-- ============================================================== -->
 				<!-- caution -->
 				<!-- ============================================================== -->
 				<th:block th:insert="fragments/template.html :: caution"></th:block>
-                       </div>
-                </div>
-            
-            </div>
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <th:block th:insert="fragments/template.html :: footer"></th:block>
-            
-        </div>
-    </div>
-    <!-- ============================================================== -->
-    <!-- end main wrapper -->
-    <!-- ============================================================== -->
+			</div>
+		</div>
 
-    
-    <!-- ============================================================== -->
+	</div>
+	<!-- ============================================================== -->
+	<!-- footer -->
+	<!-- ============================================================== -->
+	<th:block th:insert="fragments/template.html :: footer"></th:block>
+
+	</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- end main wrapper -->
+	<!-- ============================================================== -->
+
+
+	<!-- ============================================================== -->
 	<!-- JQuery js files and Script files used in bootstrap table 
 	<!-- ============================================================== -->
 	<th:block th:insert="fragments/template.html :: script"></th:block>
@@ -197,5 +197,5 @@
 		}
 	</script>
 </body>
- 
+
 </html>

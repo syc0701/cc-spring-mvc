@@ -17,12 +17,12 @@ Log in again.
 
 >$ mysql --local-infile=1 -u root -p
 
-Select db_crafterdatabase 
->mysql> use db_craftercodebase;
-
 Change the file location in the command below. 
 
 ~~~
+USE db_craftercodebase;
+DELETE FROM TBL_COVID19;
+
 LOAD DATA LOCAL INFILE 'D:\\canada\\cc-ref\\covid-19-data\\public\\data\\owid-covid-data.csv' 
 INTO TABLE TBL_COVID19 
 FIELDS TERMINATED BY ',' 
