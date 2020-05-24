@@ -189,50 +189,24 @@
 
 		chart.showLoading();
 
-		var arrTop40 = [];
+		var arr_codes = [];
 		
-		$.getJSON('/stats/getCountriesTop40', function(data) {
+		$.getJSON('/stats/getCountries/40', function(data) {
 			var iso_codes = _.toArray(data.iso_code).slice(1);
 			var locations = _.toArray(data.location).slice(1);
+			var included = _.toArray(data.included).slice(1);
 
-			var entities = _.zip(iso_codes, locations);
-
-			var top40 = "";
-			var flag = false;
-			_.each(entities, function(row) {
-				 if (flag) { 
-					 top40 = top40 + (",");
-				 } else {
-					 flag = true;
-				 }								
-				 top40 = top40 + row[0];
-				 arrTop40.push(row[0])
-			})
-			
-			// In the begining
-			var today = $.datepicker.formatDate('yy-mm-dd', new Date()) ;
-			
-			//$.getJSON('/stats/getDataByDate/CAN,KOR,JPN,USA/' + today, function loadChart(data) {
-			$.getJSON('/stats/getDataByDate/' + top40 + '/' + today, function loadChart(data) {
-				drawChart(data);
-			});
-		});
-			
-			
-		$.getJSON('/stats/getAllCountries', function(data) {
-			var iso_codes = _.toArray(data.iso_code).slice(1);
-			var locations = _.toArray(data.location).slice(1);
-
-			var entities = _.zip(iso_codes, locations);
+			var entities = _.zip(iso_codes, locations, included);
 
 			_.each(entities, function(row) {
-				//if (row[0] == 'CAN' || row[0] == 'KOR'  || row[0] == 'JPN' || row[0] == 'USA') {
-				if (_.contains(arrTop40, row[0])) {
+				if (row[2]) {
 					$('#select1').append('<option value="' + row[0] +'" selected> ' + row[1] + ' </option>');
+					arr_codes.push(row[0]);
 				} else {
 					$('#select1').append('<option value="' + row[0] +'"> ' + row[1] + ' </option>');
 				}
 			})
+			
 			$('#select1').multiselect({
 				enableFiltering : true,
 				enableCaseInsensitiveFiltering : true,
@@ -247,8 +221,18 @@
 					changeCountry();
 				}
 			});
+
+			var str = "";
+			_.each(arr_codes, function(data) {
+				if (str != "") {
+					str += ",";
+				}
+				str += data;
+			});
+
+			changeCountry();
 		});
-		
+
 
 		function changeCountry() {
 			var iso_code = $('#select1').val();

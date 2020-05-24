@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TBL_COVID19", indexes = { @Index(columnList = "iso_code"), @Index(columnList = "location") })
-public class Covid19Entity {
+public class Covid19Data {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

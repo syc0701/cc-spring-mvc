@@ -9,7 +9,7 @@ Turn on local_infile
 
 >$ mysql -h 172.16.1.10 --local-infile=1 -u root -p
 
->mysql> show variables like "local_infile"
+>mysql> show variables like "local_infile";
 >mysql> SET GLOBAL local_infile=1;
 >mysql> quit
 

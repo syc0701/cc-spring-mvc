@@ -131,7 +131,8 @@
 					'New Cases' : true,
 					'New Deaths' : true,
 					'New Tests' : false
-				}
+				},
+				left : 0
 			},
 			grid : {
 				top : '12%',
@@ -199,7 +200,7 @@
 
 		chart.showLoading();
 
-		$.getJSON('/stats/getAllCountries', function(data) {
+		$.getJSON('/stats/getCountries/40', function(data) {
 			console.log(data);
 
 			var codes = _.toArray(data.iso_code).slice(1);

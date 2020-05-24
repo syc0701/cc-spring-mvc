@@ -62,7 +62,6 @@
     <!-- end main wrapper -->
     <!-- ============================================================== -->
    
-    
     <!-- ============================================================== -->
 	<!-- JQuery js files and Script files used in bootstrap table 
 	<!-- ============================================================== -->
@@ -85,7 +84,7 @@
 				$('#result').text("Processing...");
 				
 				$.getJSON("/stats/batchProcess", function (data) {
-					console.log(data);					
+					//$('#result').text(data);
 				}).done(function () {
 					console.log("Done");
 				}).fail(function() {

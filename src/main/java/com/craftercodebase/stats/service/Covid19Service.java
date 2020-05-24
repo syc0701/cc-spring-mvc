@@ -1,6 +1,5 @@
 package com.craftercodebase.stats.service;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,11 +18,9 @@ import org.springframework.stereotype.Service;
 import com.craftercodebase.common.exception.RecordNotFoundException;
 import com.craftercodebase.stats.excel.ExcelData;
 import com.craftercodebase.stats.json.CountryEntity;
-import com.craftercodebase.stats.model.Covid19Entity;
-import com.craftercodebase.stats.model.PieChartEntity;
+import com.craftercodebase.stats.model.Covid19Data;
 import com.craftercodebase.stats.repository.ContryRepository;
 import com.craftercodebase.stats.repository.Covid19Repository;
-import com.craftercodebase.stats.repository.PieChartRepository;
 import com.fasterxml.jackson.databind.MappingIterator;
 
 @Service
@@ -34,12 +31,9 @@ public class Covid19Service {
 	Covid19Repository covidRepository;
 
 	@Autowired
-	PieChartRepository pieChartRepository;
-
-	@Autowired
 	ContryRepository contryRepository;
 
-	public Page<Covid19Entity> searchCountries(String search, String sort, String order, int offset, int limit) {
+	public Page<Covid19Data> searchCountries(String search, String sort, String order, int offset, int limit) {
 
 		int pageNo = offset / limit;
 
@@ -51,7 +45,7 @@ public class Covid19Service {
 		// Pageable paging = PageRequest.of(pageNo, limit, Sort.by(direction, sort));
 		Pageable paging = PageRequest.of(pageNo, limit);
 
-		Page<Covid19Entity> result = (Page<Covid19Entity>) covidRepository.findAll(paging, search);
+		Page<Covid19Data> result = (Page<Covid19Data>) covidRepository.findAll(paging, search);
 
 		log.debug("\n[syc0701]\n number=" + result.getNumber() + ", ele=" + result.getNumberOfElements());
 
@@ -62,8 +56,8 @@ public class Covid19Service {
 		return result;
 	}
 
-	public Covid19Entity getEmployeeById(Long id) throws RecordNotFoundException {
-		Optional<Covid19Entity> employee = covidRepository.findById(id);
+	public Covid19Data getEmployeeById(Long id) throws RecordNotFoundException {
+		Optional<Covid19Data> employee = covidRepository.findById(id);
 
 		if (employee.isPresent()) {
 			return employee.get();
@@ -72,34 +66,34 @@ public class Covid19Service {
 		}
 	}
 
-	public List<PieChartEntity> searchCasesByIsoCode(String search) {
+	public List<Covid19Data> searchCasesByIsoCode(String search) {
 
-		List<PieChartEntity> result = null;
-		result = (List<PieChartEntity>) pieChartRepository.findCasesByIsoCode(search);
-
-		return result;
-	}
-
-	public List<PieChartEntity> searchCasesByIsoCode(List<String> iso_codes) {
-
-		List<PieChartEntity> result = null;
-		result = (List<PieChartEntity>) pieChartRepository.findCasesByIsoCodes(iso_codes);
+		List<Covid19Data> result = null;
+		result = (List<Covid19Data>) covidRepository.findCasesByIsoCode(search);
 
 		return result;
 	}
 
-	public List<PieChartEntity> searchCasesByDate(List<String> search, String selectedDate) {
+	public List<Covid19Data> searchCasesByIsoCode(List<String> iso_codes) {
 
-		List<PieChartEntity> result = null;
-		result = (List<PieChartEntity>) pieChartRepository.findCasesByDate(search, selectedDate);
+		List<Covid19Data> result = null;
+		result = (List<Covid19Data>) covidRepository.findCasesByIsoCodes(iso_codes);
 
 		return result;
 	}
 
-	public List<PieChartEntity> searchCasesForMap() {
+	public List<Covid19Data> searchCasesByDate(List<String> search, String selectedDate) {
 
-		List<PieChartEntity> result = null;
-		result = (List<PieChartEntity>) pieChartRepository.findCasesForMap();
+		List<Covid19Data> result = null;
+		result = (List<Covid19Data>) covidRepository.findCasesByDate(search, selectedDate);
+
+		return result;
+	}
+
+	public List<Covid19Data> searchCasesForMap() {
+
+		List<Covid19Data> result = null;
+		result = (List<Covid19Data>) covidRepository.findCasesForMap();
 
 		return result;
 	}
@@ -112,26 +106,31 @@ public class Covid19Service {
 		return result;
 	}
 
-	public List<CountryEntity> searchCountriesTop40() {
+	public List<CountryEntity> searchCountriesTopN(int limit) {
 
 		List<CountryEntity> result = null;
-		result = (List<CountryEntity>) contryRepository.findCountriesTop40();
+		result = (List<CountryEntity>) contryRepository.findCountriesTopN(limit);
 
 		return result;
 	}
 
-	public void batch(MappingIterator<ExcelData> excelData) {
+	public String batch(MappingIterator<ExcelData> excelData) {
+
+		String result = "Success";
 
 		covidRepository.deleteAll();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		ArrayList<Covid19Entity> entities = new ArrayList<Covid19Entity>();
+		ArrayList<Covid19Data> entities = new ArrayList<Covid19Data>();
 
 		try {
-			for (ExcelData d : excelData.readAll()) {
-				Covid19Entity entity = new Covid19Entity();
 
-				entity.setIso_code(d.getIso_code());   
+			while (excelData.hasNextValue()) {
+				ExcelData d = excelData.next();
+
+				Covid19Data entity = new Covid19Data();
+
+				entity.setIso_code(d.getIso_code());
 				entity.setLocation(d.getLocation());
 				entity.setReported_date(sdf.parse(d.getDate()));
 				entity.setTotal_cases(d.getTotal_cases());
@@ -150,12 +149,16 @@ public class Covid19Service {
 
 				entities.add(entity);
 			}
+
 		} catch (ParseException e) {
 			log.error(e.getMessage(), e.getCause());
-		} catch (IOException e) {
+			result = e.getMessage();
+		} catch (Exception e) {
 			log.error(e.getMessage(), e.getCause());
+			result = e.getMessage();
 		}
 		covidRepository.saveAll(entities);
 
+		return result;
 	}
 }

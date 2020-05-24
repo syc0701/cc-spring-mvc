@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +33,7 @@ import com.craftercodebase.stats.json.ChatDataForMap;
 import com.craftercodebase.stats.json.ChatDataForMap.DataForMap;
 import com.craftercodebase.stats.json.Countries;
 import com.craftercodebase.stats.json.CountryEntity;
-import com.craftercodebase.stats.model.Covid19Entity;
-import com.craftercodebase.stats.model.PieChartEntity;
+import com.craftercodebase.stats.model.Covid19Data;
 import com.craftercodebase.stats.service.Covid19Service;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -60,7 +60,7 @@ public class Covid19Controller {
 			@RequestParam(required = false, defaultValue = "total_cases") String sort,
 			@RequestParam(required = false, defaultValue = "desc") String order, @RequestParam int offset, @RequestParam int limit) {
 
-		Page<Covid19Entity> result = service.searchCountries(search, sort, order, offset, limit);
+		Page<Covid19Data> result = service.searchCountries(search, sort, order, offset, limit);
 
 		RspDataTable rsp = new RspDataTable();
 
@@ -71,7 +71,7 @@ public class Covid19Controller {
 		rsp.setTotal(result.getTotalElements());
 
 		ArrayList<RspDataTableRow> rows = new ArrayList<RspDataTableRow>();
-		for (Covid19Entity entity : result) {
+		for (Covid19Data entity : result) {
 
 			RspDataTableRow row = new RspDataTableRow();
 			row.setRanking(startNo++);
@@ -99,41 +99,45 @@ public class Covid19Controller {
 		return "casesByCountry.html";
 	}
 
-	@GetMapping(value = "/getAllCountries")
-	public @ResponseBody Countries getAllCountries() {
+	@GetMapping(value = "/getCountries/{limit}")
+	public @ResponseBody Countries getCountries(Model model, @PathVariable("limit") String limit) {
 
 		Countries country = new Countries();
 
 		ArrayList<String> iso_code = new ArrayList<String>();
 		ArrayList<String> location = new ArrayList<String>();
+		ArrayList<Boolean> included = new ArrayList<Boolean>();
 
 		country.setIso_code(iso_code);
 		country.setLocation(location);
+		country.setIncluded(included);
 
-		List<CountryEntity> aa = service.searchAllCountries();
-		aa.forEach(a -> {
+		List<CountryEntity> allCountries = service.searchAllCountries();
+		List<CountryEntity> limitedCountries = service.searchCountriesTopN(Integer.parseInt(limit));
+
+		allCountries.forEach(a -> {
 			iso_code.add(a.getIso_code());
 			location.add(a.getLocation());
-		});
 
-		return country;
-	}
+			if (limit.equals("ALL")) {
+				included.add(false);
+			} else {
 
-	@GetMapping(value = "/getCountriesTop40")
-	public @ResponseBody Countries getCountriesTop40() {
+				boolean isExist = false;
+				
+				for (CountryEntity b : limitedCountries) {
+					if (a.getIso_code().equals(b.getIso_code())) {
+						isExist = true;
+						break;
+					}
+				}
 
-		Countries country = new Countries();
-
-		ArrayList<String> iso_code = new ArrayList<String>();
-		ArrayList<String> location = new ArrayList<String>();
-
-		country.setIso_code(iso_code);
-		country.setLocation(location);
-
-		List<CountryEntity> resultSet = service.searchCountriesTop40();
-		resultSet.forEach(row -> {
-			iso_code.add(row.getIso_code());
-			location.add(row.getLocation());
+				if (isExist) {
+					included.add(true);
+				} else {
+					included.add(false);
+				}
+			}
 		});
 
 		return country;
@@ -160,7 +164,7 @@ public class Covid19Controller {
 
 		// setting
 		String search = iso_code;
-		List<PieChartEntity> resultSet = service.searchCasesByIsoCode(search);
+		List<Covid19Data> resultSet = service.searchCasesByIsoCode(search);
 
 		resultSet.forEach(a -> {
 			totalCases.add(a.getTotal_cases());
@@ -180,15 +184,36 @@ public class Covid19Controller {
 		return "cumulativeTrend";
 	}
 
+	@RequestMapping(path = "/getCumulativeTrendData/{chkBoxVal}")
+	public @ResponseBody ChartCTData getCumulativeTrendData(Model model, @PathVariable("chkBoxVal") int chkBoxVal) {
+
+		List<CountryEntity> list20 = service.searchCountriesTopN(20);
+
+		StringBuffer buffer = new StringBuffer();
+		boolean first = true;
+
+		for (CountryEntity entity : list20) {
+			if (!first) {
+				buffer.append(",");
+			}
+			buffer.append(entity.getIso_code());
+			first = false;
+		}
+
+		return getCumulativeTrendData(model, buffer.toString(), chkBoxVal);
+	}
+
 	@RequestMapping(path = "/getCumulativeTrendData/{iso_codes}/{chkBoxVal}")
 	public @ResponseBody ChartCTData getCumulativeTrendData(Model model, @PathVariable("iso_codes") String iso_codes,
 			@PathVariable("chkBoxVal") int chkBoxVal) {
 
 		ChartCTData cdata = new ChartCTData();
 
+		log.debug("\n[syc0701]\n iso_codes=" + iso_codes);
+
 		// setting
 		List<String> list_iso_codes = (List<String>) Arrays.asList(iso_codes.split(","));
-		List<PieChartEntity> resultSet = service.searchCasesByIsoCode(list_iso_codes);
+		List<Covid19Data> resultSet = service.searchCasesByIsoCode(list_iso_codes);
 
 		ArrayList<String> arr_legends = new ArrayList<String>();
 		ArrayList<String> arr_reported_date = new ArrayList<String>(); // reported_date,
@@ -234,7 +259,16 @@ public class Covid19Controller {
 			}
 		});
 
-		cdata.setLegends(arr_legends);
+		// cdata.setLegends(arr_legends);
+
+		Collections.sort(arr_data);
+
+		ArrayList<String> tt = new ArrayList<String>();
+		for (Datas a : arr_data) {
+			tt.add(a.getLocation());
+		}
+		cdata.setLegends(tt);
+
 		cdata.setReported_date(arr_reported_date);
 		cdata.setDatas(arr_data);
 
@@ -254,7 +288,10 @@ public class Covid19Controller {
 
 		// setting
 		List<String> listofOptions = (List<String>) Arrays.asList(iso_codes.split(","));
-		List<PieChartEntity> resultSet = service.searchCasesByDate(listofOptions, selectedDate.get());
+
+		log.debug("\n[syc0701]\n" + listofOptions);
+
+		List<Covid19Data> resultSet = service.searchCasesByDate(listofOptions, selectedDate.get());
 
 		ArrayList<ChartData2.Datas3> arr_datas = new ArrayList<ChartData2.Datas3>();
 		ArrayList<String> arr_countries = new ArrayList<String>();
@@ -313,7 +350,7 @@ public class Covid19Controller {
 
 		List<DataForMap> countries = new ArrayList<DataForMap>();
 
-		List<PieChartEntity> resultSet = service.searchCasesForMap();
+		List<Covid19Data> resultSet = service.searchCasesForMap();
 		resultSet.forEach(row -> {
 			DataForMap d1 = cData.new DataForMap();
 			d1.setCountryName(row.getLocation());
@@ -335,7 +372,7 @@ public class Covid19Controller {
 	@GetMapping("/batchProcess")
 	public @ResponseBody String testCase1() {
 		long processingTime = 0L;
-
+		String result = null;
 		try {
 			CsvMapper mapper = new CsvMapper();
 			mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
@@ -355,7 +392,10 @@ public class Covid19Controller {
 					.addColumn("new_tests", CsvSchema.ColumnType.NUMBER)
 					.addColumn("total_tests_per_thousand", CsvSchema.ColumnType.NUMBER)
 					.addColumn("new_tests_per_thousand", CsvSchema.ColumnType.NUMBER)
+					.addColumn("new_tests_smoothed", CsvSchema.ColumnType.NUMBER)
+					.addColumn("new_tests_smoothed_per_thousand", CsvSchema.ColumnType.NUMBER)
 					.addColumn("tests_units", CsvSchema.ColumnType.STRING)
+					.addColumn("stringency_index", CsvSchema.ColumnType.NUMBER)
 					.addColumn("population", CsvSchema.ColumnType.NUMBER)
 					.addColumn("population_density", CsvSchema.ColumnType.NUMBER)
 					.addColumn("median_age", CsvSchema.ColumnType.NUMBER)
@@ -375,7 +415,7 @@ public class Covid19Controller {
 			long start = new Date().getTime();
 
 			MappingIterator<ExcelData> excelData = mapper.readerFor(ExcelData.class).with(schema).readValues(csvFile);
-			service.batch(excelData);
+			result = service.batch(excelData);
 
 			processingTime = new Date().getTime() - start;
 			log.debug("processingTime=" + processingTime);
@@ -384,7 +424,7 @@ public class Covid19Controller {
 			log.error(e.getMessage(), e.getCause());
 		}
 
-		return "Server-Success (" + processingTime + " ms)";
+		return result;
 	}
 
 }

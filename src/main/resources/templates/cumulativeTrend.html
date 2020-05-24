@@ -18,7 +18,6 @@
 		<!-- ============================================================== -->
 		<th:block th:insert="fragments/template.html :: left-sidebar"></th:block>
 
-
 		<!-- ============================================================== -->
 		<!-- wrapper  -->
 		<!-- ============================================================== -->
@@ -60,13 +59,13 @@
 						
 						<label>Total Cases</label>
 		                    <div class="switch-button switch-button-success">
-		                         <input type="checkbox" checked name="switch1" id="switch1" onclick="clickCheck(1)" value="1")><span>
-		                         <label for="switch1"></label></span>
+		                         <input type="checkbox" checked name="switch1" id="switch1" onclick="clickCheck(1)" value="1">
+		                         <span><label for="switch1"></label></span>
 		                    </div>
 	                    <label>Total Deaths</label>
 	                         <div class="switch-button switch-button-success">
-		                         <input type="checkbox" name="switch2" id="switch2" onclick="clickCheck(2)" value="2"><span>
-		                         <label for="switch2"></label></span>
+		                         <input type="checkbox" name="switch2" id="switch2" onclick="clickCheck(2)" value="2">
+		                         <span><label for="switch2"></label></span>
 		                    </div>
 	                    <label>New Cases</label>
 	                         <div class="switch-button switch-button-success">
@@ -115,11 +114,22 @@
 			tooltip : {
 				trigger : 'axis',
 				axisPointer : {
-					type : 'shadow',
+					type : 'line',
 					label : {
 						show : true
 					}
-				}
+				},
+				backgroundColor: 'rgba(245, 245, 245, 0.8)',
+	            borderWidth: 1,
+	            borderColor: '#ccc',
+	            padding: 10,
+	            textStyle: {
+	                color: '#000'
+	            },
+	            renderMode: 'richText',
+	            confine: true,
+	            appendToBody: true,
+	            extraCssText: 'width: 170px'
 			},
 			toolbox : {
 				show : true,
@@ -144,7 +154,7 @@
 				}
 			},
 			calculable : true,
-			legend : {
+			legend : { 
 				data : [ 'Growth', 'Canada' ],
 				itemGap : 5,
 				selected : {
@@ -174,7 +184,7 @@
 					}
 				}
 			} ],
-			dataZoom : [ {
+			dataZoom : [ { 
 				show : true,
 				start : 70,
 				end : 100
@@ -190,32 +200,34 @@
 				height : '80%',
 				showDataShadow : false,
 				left : '93%'
-			} ],
+			} ]/* ,
 			series : [ {
 				name : 'Total Cases',
 				type : 'line',
 				data : []
-			}]
+			}] */
 
 		});
 
-		
 		chart.showLoading();
-		$.getJSON('/stats/getAllCountries', function(data) {
-			console.log(data);
+		
+		$.getJSON('/stats/getCountries/20', function(data) {
+			console.log("ALL=" + data);
 
 			var iso_codes = _.toArray(data.iso_code).slice(1);
 			var locations = _.toArray(data.location).slice(1);
+			var included = _.toArray(data.included).slice(1);
 
-			var entities = _.zip(iso_codes, locations);
+			var entities = _.zip(iso_codes, locations, included);
 
 			_.each(entities, function(row) {
-				if (row[0] == 'CAN' || row[0] == 'KOR'  || row[0] == 'JPN' || row[0] == 'USA') {
+				if (row[2]) {
 					$('#select1').append('<option value="' + row[0] +'" selected> ' + row[1] + ' </option>');
 				} else {
 					$('#select1').append('<option value="' + row[0] +'"> ' + row[1] + ' </option>');
 				}
 			})
+			
 			$('#select1').multiselect({
 				enableFiltering : true,
 				enableCaseInsensitiveFiltering : true,
@@ -230,63 +242,37 @@
 					changeCountry();
 				}
 			});
-		});
 
+		});
+ 
+
+		$.getJSON('/stats/getCumulativeTrendData/1', function loadChart(data) {
+			drawChart(data);
+		});
 		
-		$.getJSON('/stats/getCumulativeTrendData/CAN,KOR,JPN,USA/1', function loadChart(data) {
-
-			chart.hideLoading();
-
-			var legendData = [];
-			var legendList = [];
-
-			for (var i = 0; i < data.legends.length; i++) {
-
-				var legendObj = {};
-				legendObj[data.legends[i]] = true;
-				legendList.push(legendObj);
-
-				legendData.push(data.legends[i]);
-			}
-
-			var seriesList = [];
-			for (var j = 0; j < data.datas.length; j++) {
-				seriesList.push({
-					name : data.datas[j].location,
-					type : 'line',
-					data : data.datas[j].entity
-				});
-			}
-
-			option = {
-				legend : {
-					data : legendData,
-					itemGap : 5,
-					selected : legendList
-				},
-				xAxis : [ {
-					type : 'category',
-					data : data.reported_date
-				} ],
-				series : seriesList
-			};
-
-			console.log("---->" + option);
-
-			chart.setOption(option);
-
-		});
-
 		
 		function changeCountry() {
 			var iso_code = $('#select1').val();
 			var chkBoxVal = $(":checked[name^='switch']").val();
-			
-			//chart.hideLoading();
 
-			$.getJSON('/stats/getCumulativeTrendData/' + iso_code + "/" + chkBoxVal, function loadChart(data) {
+			//chart.showLoading();
+			
+			var str_iso_codes = '';
+			var flag = false;
+			_.each(iso_code, function (code) {
+				if (flag == true) {
+					str_iso_codes = str_iso_codes + ','; 
+				}	
+
+				str_iso_codes = str_iso_codes + code;				
+
+				flag = true;
+			});
+			
+
+			$.getJSON('/stats/getCumulativeTrendData/' + str_iso_codes + "/" + chkBoxVal, function loadChart(data) {
  
-				chart.hideLoading();
+				//chart.hideLoading();
 
 				var legendData = [];
 				var legendList = [];
@@ -326,6 +312,52 @@
 				chart.setOption(option);
  
 			});
+		}
+
+		function drawChart(data) {
+			//chart.hideLoading();
+
+			var legendData = [];
+			var legendList = [];
+
+			for (var i = 0; i < data.legends.length; i++) {
+
+				var legendObj = {};
+				legendObj[data.legends[i]] = true;
+				legendList.push(legendObj);
+
+				legendData.push(data.legends[i]);
+			}
+
+			var seriesList = [];
+			for (var j = 0; j < data.datas.length; j++) {
+				seriesList.push({
+					name : data.datas[j].location,
+					type : 'line',
+					data : data.datas[j].entity
+				});
+			}
+
+			option = {
+				legend : {
+					type : 'scroll',
+					right : 180,
+					data : legendData,
+					itemGap : 5,
+					selected : legendList 
+				},
+				xAxis : [ {
+					type : 'category',
+					data : data.reported_date
+				} ],
+				series : seriesList
+			};
+
+			//console.log("---->" + option);
+
+			chart.setOption(option);
+
+			chart.hideLoading();
 		}
 		 
 		 function clickCheck(id) {

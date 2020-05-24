@@ -32,10 +32,12 @@ public class ChartCTData {
 		this.reported_date = reported_date;
 	}
 
-	public class Datas {
+	public class Datas implements Comparable<Datas> {
 
 		String location = new String();
 		ArrayList<Object> entity = new ArrayList<Object>();
+		
+		int cases;
 
 		public String getLocation() {
 			return location;
@@ -55,6 +57,16 @@ public class ChartCTData {
 
 		public void addEntity(Object obj) {
 			this.entity.add(obj);
+			cases = (int) obj;
+		}
+		
+		public int getCases() {
+			return cases;
+		}
+
+		@Override
+		public int compareTo(Datas o) {
+			return o.getCases() - cases;
 		}
 	}
 }

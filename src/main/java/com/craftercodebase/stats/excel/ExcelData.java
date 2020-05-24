@@ -17,7 +17,10 @@ public class ExcelData {
 	private float new_tests;
 	private float total_tests_per_thousand;
 	private float new_tests_per_thousand;
+	private float new_tests_smoothed;
+	private float new_tests_smoothed_per_thousand;
 	private String tests_units;
+	private float stringency_index;
 	private String population;
 	private float population_density;
 	private float median_age;
@@ -152,12 +155,36 @@ public class ExcelData {
 		this.new_tests_per_thousand = new_tests_per_thousand;
 	}
 
+	public float getNew_tests_smoothed() {
+		return new_tests_smoothed;
+	}
+
+	public void setNew_tests_smoothed(float new_tests_smoothed) {
+		this.new_tests_smoothed = new_tests_smoothed;
+	}
+
+	public float getNew_tests_smoothed_per_thousand() {
+		return new_tests_smoothed_per_thousand;
+	}
+
+	public void setNew_tests_smoothed_per_thousand(float new_tests_smoothed_per_thousand) {
+		this.new_tests_smoothed_per_thousand = new_tests_smoothed_per_thousand;
+	}
+
 	public String getTests_units() {
 		return tests_units;
 	}
 
 	public void setTests_units(String tests_units) {
 		this.tests_units = tests_units;
+	}
+
+	public float getStringency_index() {
+		return stringency_index;
+	}
+
+	public void setStringency_index(float stringency_index) {
+		this.stringency_index = stringency_index;
 	}
 
 	public String getPopulation() {
