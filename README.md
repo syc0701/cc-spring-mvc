@@ -102,4 +102,4 @@ ENTRYPOINT ["java","-jar","/app.jar"]
 
 
 ## Contact
-If you have any questions or requests, please contact me at [syc0701@gmail.com](mailto:syc0701@gmail.com)    
+If you have any questions or requests, please contact me at [syc0701@gmail.com](mailto:syc0701@gmail.com), [youngcheol.dev@gmail.com](mailto:youngcheol.dev@gmail.com)    
