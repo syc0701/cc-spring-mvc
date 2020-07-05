@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.craftercodebase.stats.excel.ExcelData;
+import com.craftercodebase.stats.excel.Exl_Covid19;
 import com.craftercodebase.stats.web.Covid19Controller;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -66,10 +66,10 @@ public class TestController {
 			File csvFile = new File("D:\\canada\\cc-ref\\covid-19-data\\public\\data\\owid-covid-data.csv");
 			long start = new Date().getTime();
 
-			MappingIterator<ExcelData> it = mapper.readerFor(ExcelData.class).with(schema).readValues(csvFile);
+			MappingIterator<Exl_Covid19> it = mapper.readerFor(Exl_Covid19.class).with(schema).readValues(csvFile);
 
 			long a = 0L;
-			for (ExcelData e : it.readAll()) {
+			for (Exl_Covid19 e : it.readAll()) {
 				a++;
 			}
 

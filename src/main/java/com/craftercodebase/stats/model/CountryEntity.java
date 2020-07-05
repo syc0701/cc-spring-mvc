@@ -1,4 +1,4 @@
-package com.craftercodebase.stats.json;
+package com.craftercodebase.stats.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

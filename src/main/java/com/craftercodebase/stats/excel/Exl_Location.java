@@ -1,17 +1,12 @@
-package com.craftercodebase.stats.model;
+package com.craftercodebase.stats.excel;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+public class Exl_Location {
 
-@Entity
-public class TblLocations {
-
-	@Id
 	private String countriesAndTerritories;
 	private String location;
 	private String continent;
 	private int population_year;
-	private long population;
+	private int population;
 
 	public String getCountriesAndTerritories() {
 		return countriesAndTerritories;
@@ -45,18 +40,12 @@ public class TblLocations {
 		this.population_year = population_year;
 	}
 
-	public long getPopulation() {
+	public int getPopulation() {
 		return population;
 	}
 
-	public void setPopulation(long population) {
+	public void setPopulation(int population) {
 		this.population = population;
-	}
-
-	@Override
-	public String toString() {
-		return "Locations [countriesAndTerritories=" + countriesAndTerritories + ", location=" + location + ", continent=" + continent
-				+ ", population_year=" + population_year + ", population=" + population + "]";
 	}
 
 }

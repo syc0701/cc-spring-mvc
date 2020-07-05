@@ -24,16 +24,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.craftercodebase.mvc.web.RspDataTable;
 import com.craftercodebase.mvc.web.RspDataTableRow;
-import com.craftercodebase.stats.excel.ExcelData;
+import com.craftercodebase.stats.excel.Exl_Covid19;
+import com.craftercodebase.stats.excel.Exl_Location;
 import com.craftercodebase.stats.json.ChartCTData;
 import com.craftercodebase.stats.json.ChartCTData.Datas;
 import com.craftercodebase.stats.json.ChartData;
 import com.craftercodebase.stats.json.ChartData2;
-import com.craftercodebase.stats.json.ChatDataForMap;
-import com.craftercodebase.stats.json.ChatDataForMap.DataForMap;
+import com.craftercodebase.stats.json.ChartDataForMap;
+import com.craftercodebase.stats.json.ChartDataForMap.DataForMap;
 import com.craftercodebase.stats.json.Countries;
-import com.craftercodebase.stats.json.CountryEntity;
-import com.craftercodebase.stats.model.Covid19Data;
+import com.craftercodebase.stats.model.CountryEntity;
+import com.craftercodebase.stats.model.MapEntity;
+import com.craftercodebase.stats.model.Tbl_Covid19;
 import com.craftercodebase.stats.service.Covid19Service;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -60,7 +62,7 @@ public class Covid19Controller {
 			@RequestParam(required = false, defaultValue = "total_cases") String sort,
 			@RequestParam(required = false, defaultValue = "desc") String order, @RequestParam int offset, @RequestParam int limit) {
 
-		Page<Covid19Data> result = service.searchCountries(search, sort, order, offset, limit);
+		Page<Tbl_Covid19> result = service.searchCountries(search, sort, order, offset, limit);
 
 		RspDataTable rsp = new RspDataTable();
 
@@ -71,7 +73,7 @@ public class Covid19Controller {
 		rsp.setTotal(result.getTotalElements());
 
 		ArrayList<RspDataTableRow> rows = new ArrayList<RspDataTableRow>();
-		for (Covid19Data entity : result) {
+		for (Tbl_Covid19 entity : result) {
 
 			RspDataTableRow row = new RspDataTableRow();
 			row.setRanking(startNo++);
@@ -164,7 +166,7 @@ public class Covid19Controller {
 
 		// setting
 		String search = iso_code;
-		List<Covid19Data> resultSet = service.searchCasesByIsoCode(search);
+		List<Tbl_Covid19> resultSet = service.searchCasesByIsoCode(search);
 
 		resultSet.forEach(a -> {
 			totalCases.add(a.getTotal_cases());
@@ -213,7 +215,7 @@ public class Covid19Controller {
 
 		// setting
 		List<String> list_iso_codes = (List<String>) Arrays.asList(iso_codes.split(","));
-		List<Covid19Data> resultSet = service.searchCasesByIsoCode(list_iso_codes);
+		List<Tbl_Covid19> resultSet = service.searchCasesByIsoCode(list_iso_codes);
 
 		ArrayList<String> arr_legends = new ArrayList<String>();
 		ArrayList<String> arr_reported_date = new ArrayList<String>(); // reported_date,
@@ -291,7 +293,7 @@ public class Covid19Controller {
 
 		log.debug("\n[syc0701]\n" + listofOptions);
 
-		List<Covid19Data> resultSet = service.searchCasesByDate(listofOptions, selectedDate.get());
+		List<Tbl_Covid19> resultSet = service.searchCasesByDate(listofOptions, selectedDate.get());
 
 		ArrayList<ChartData2.Datas3> arr_datas = new ArrayList<ChartData2.Datas3>();
 		ArrayList<String> arr_countries = new ArrayList<String>();
@@ -338,8 +340,8 @@ public class Covid19Controller {
 	}
 
 	@RequestMapping(path = "/getMapData")
-	public @ResponseBody ChatDataForMap getMapData(Model model) {
-		ChatDataForMap cData = new ChatDataForMap();
+	public @ResponseBody ChartDataForMap getMapData(Model model) {
+		ChartDataForMap cData = new ChartDataForMap();
 
 		ArrayList<String> c = new ArrayList<String>();
 		c.add("Country");
@@ -350,11 +352,40 @@ public class Covid19Controller {
 
 		List<DataForMap> countries = new ArrayList<DataForMap>();
 
-		List<Covid19Data> resultSet = service.searchCasesForMap();
+		List<Tbl_Covid19> resultSet = service.searchCasesForMap();
 		resultSet.forEach(row -> {
 			DataForMap d1 = cData.new DataForMap();
 			d1.setCountryName(row.getLocation());
 			d1.setValues(row.getTotal_cases(), row.getTotal_deaths());
+
+			countries.add(d1);
+		});
+
+		cData.setCountries(countries);
+
+		return cData;
+	}
+
+	@RequestMapping(path = "/getMapData2")
+	public @ResponseBody ChartDataForMap getMapData2(Model model) {
+		ChartDataForMap cData = new ChartDataForMap();
+
+		ArrayList<String> c = new ArrayList<String>();
+		c.add("Country");
+		c.add("Population");
+		c.add("Total Cases");
+		c.add("Total Deaths");
+
+		cData.setLabels(c);
+
+		List<DataForMap> countries = new ArrayList<DataForMap>();
+ 
+		List<MapEntity> resultSet = service.searchCasesForMap2();
+		resultSet.forEach(row -> {
+			DataForMap d1 = cData.new DataForMap();
+			
+			d1.setCountryName(row.getLocation());
+			d1.setValues(row.getPopulation(), row.getTotal_cases(), row.getTotal_deaths());
 
 			countries.add(d1);
 		});
@@ -369,8 +400,8 @@ public class Covid19Controller {
 		return "batch";
 	}
 
-	@GetMapping("/batchProcess")
-	public @ResponseBody String testCase1() {
+	@GetMapping("/batchCovid19")
+	public @ResponseBody String batchCovid19() {
 		long processingTime = 0L;
 		String result = null;
 		try {
@@ -411,11 +442,11 @@ public class Covid19Controller {
 					.addColumn("hospital_beds_per_100k", CsvSchema.ColumnType.NUMBER)
 					.build().withHeader();
 
-			File csvFile = new File("D:\\canada\\cc-ref\\covid-19-data\\public\\data\\owid-covid-data.csv");
+			File csvFile = new File("D:\\canada\\covid-19-data\\public\\data\\owid-covid-data.csv");
 			long start = new Date().getTime();
 
-			MappingIterator<ExcelData> excelData = mapper.readerFor(ExcelData.class).with(schema).readValues(csvFile);
-			result = service.batch(excelData);
+			MappingIterator<Exl_Covid19> excelData = mapper.readerFor(Exl_Covid19.class).with(schema).readValues(csvFile);
+			result = service.batchCovid19(excelData);
 
 			processingTime = new Date().getTime() - start;
 			log.debug("processingTime=" + processingTime);
@@ -425,6 +456,43 @@ public class Covid19Controller {
 		}
 
 		return result;
+	}
+	
+	@GetMapping("/batchLocationData")
+	public @ResponseBody String batchLocationData() {
+		long processingTime = 0L;
+		String result = null;
+		try {
+			CsvMapper mapper = new CsvMapper();
+			mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
+			CsvSchema schema = CsvSchema.builder()
+					.addColumn("countriesAndTerritories", CsvSchema.ColumnType.STRING)
+					.addColumn("location", CsvSchema.ColumnType.STRING)
+					.addColumn("continent", CsvSchema.ColumnType.STRING)
+					.addColumn("population_year", CsvSchema.ColumnType.NUMBER)
+					.addColumn("population", CsvSchema.ColumnType.NUMBER)
+					.build().withHeader();
+
+			File csvFile = new File("D:\\canada\\covid-19-data\\public\\data\\ecdc\\locations.csv");
+			long start = new Date().getTime();
+
+			MappingIterator<Exl_Location> excelData = mapper.readerFor(Exl_Location.class).with(schema).readValues(csvFile);
+			result = service.batchLocation(excelData);
+
+			processingTime = new Date().getTime() - start;
+			log.debug("processingTime=" + processingTime);
+
+		} catch (IOException e) {
+			log.error(e.getMessage(), e.getCause());
+		}
+
+		return result;
+	}
+	
+	@GetMapping("/pupulation")
+	public @ResponseBody String getPupulation() {
+		
+		return null;
 	}
 
 }

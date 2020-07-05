@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ChatDataForMap {
+public class ChartDataForMap {
 
 	private ArrayList<String> labels = new ArrayList<String>();
 	private List<DataForMap> countries = new ArrayList<DataForMap>();

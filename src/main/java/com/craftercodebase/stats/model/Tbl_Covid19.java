@@ -1,39 +1,132 @@
-package com.craftercodebase.stats.excel;
+package com.craftercodebase.stats.model;
 
-public class ExcelData {
+import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "TBL_COVID19", indexes = { @Index(columnList = "iso_code"), @Index(columnList = "location") })
+public class Tbl_Covid19 {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	@Column(name = "iso_code", nullable = false)
 	private String iso_code;
+
+	@Column(name = "continent", nullable = false)
+	private String continent;
+
+	@Column(name = "location")
 	private String location;
-	private String date;
+
+	@Column(name = "reported_date", nullable = false)
+	private Date reported_date;
+
+	@Column(name = "total_cases")
 	private int total_cases;
+
+	@Column(name = "new_cases")
 	private int new_cases;
+
+	@Column(name = "total_deaths")
 	private int total_deaths;
+
+	@Column(name = "new_deaths")
 	private int new_deaths;
+
+	@Column(name = "total_cases_per_million")
 	private float total_cases_per_million;
+
+	@Column(name = "new_cases_per_million")
 	private float new_cases_per_million;
+
+	@Column(name = "total_deaths_per_million")
 	private float total_deaths_per_million;
+
+	@Column(name = "new_deaths_per_million")
 	private float new_deaths_per_million;
-	private float total_tests;
-	private float new_tests;
+
+	@Column(name = "total_tests")
+	private int total_tests;
+
+	@Column(name = "new_tests")
+	private int new_tests;
+
+	@Column(name = "total_tests_per_thousand")
 	private float total_tests_per_thousand;
+
+	@Column(name = "new_tests_per_thousand")
 	private float new_tests_per_thousand;
+
+	@Column(name = "new_tests_smoothed")
 	private float new_tests_smoothed;
+
+	@Column(name = "new_tests_smoothed_per_thousand")
 	private float new_tests_smoothed_per_thousand;
+
+	@Column(name = "tests_units")
 	private String tests_units;
+
+	@Column(name = "stringency_index")
 	private float stringency_index;
-	private String population;
+
+	@Column(name = "population")
+	private int population;
+
+	@Column(name = "population_density")
 	private float population_density;
+
+	@Column(name = "median_age")
 	private float median_age;
+
+	@Column(name = "aged_65_older")
 	private float aged_65_older;
+
+	@Column(name = "aged_70_older")
 	private float aged_70_older;
+
+	@Column(name = "gdp_per_capita")
 	private float gdp_per_capita;
+
+	@Column(name = "extreme_poverty")
 	private float extreme_poverty;
+
+	@Column(name = "cvd_death_rate")
 	private float cvd_death_rate;
+
+	@Column(name = "diabetes_prevalence")
 	private float diabetes_prevalence;
+
+	@Column(name = "female_smokers")
 	private float female_smokers;
+
+	@Column(name = "male_smokers")
 	private float male_smokers;
+
+	@Column(name = "handwashing_facilities")
 	private float handwashing_facilities;
-	private float hospital_beds_per_100k;
+
+	@Column(name = "hospital_beds_per_thousand")
+	private float hospital_beds_per_thousand;
+
+	@Column(name = "life_expectancy")
+	private float life_expectancy;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getIso_code() {
 		return iso_code;
@@ -41,6 +134,14 @@ public class ExcelData {
 
 	public void setIso_code(String iso_code) {
 		this.iso_code = iso_code;
+	}
+
+	public String getContinent() {
+		return continent;
+	}
+
+	public void setContinent(String continent) {
+		this.continent = continent;
 	}
 
 	public String getLocation() {
@@ -51,12 +152,12 @@ public class ExcelData {
 		this.location = location;
 	}
 
-	public String getDate() {
-		return date;
+	public Date getReported_date() {
+		return reported_date;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setReported_date(Date reported_date) {
+		this.reported_date = reported_date;
 	}
 
 	public int getTotal_cases() {
@@ -123,19 +224,19 @@ public class ExcelData {
 		this.new_deaths_per_million = new_deaths_per_million;
 	}
 
-	public float getTotal_tests() {
+	public int getTotal_tests() {
 		return total_tests;
 	}
 
-	public void setTotal_tests(float total_tests) {
+	public void setTotal_tests(int total_tests) {
 		this.total_tests = total_tests;
 	}
 
-	public float getNew_tests() {
+	public int getNew_tests() {
 		return new_tests;
 	}
 
-	public void setNew_tests(float new_tests) {
+	public void setNew_tests(int new_tests) {
 		this.new_tests = new_tests;
 	}
 
@@ -187,11 +288,11 @@ public class ExcelData {
 		this.stringency_index = stringency_index;
 	}
 
-	public String getPopulation() {
+	public int getPopulation() {
 		return population;
 	}
 
-	public void setPopulation(String population) {
+	public void setPopulation(int population) {
 		this.population = population;
 	}
 
@@ -283,12 +384,37 @@ public class ExcelData {
 		this.handwashing_facilities = handwashing_facilities;
 	}
 
-	public float getHospital_beds_per_100k() {
-		return hospital_beds_per_100k;
+	public float getHospital_beds_per_thousand() {
+		return hospital_beds_per_thousand;
 	}
 
-	public void setHospital_beds_per_100k(float hospital_beds_per_100k) {
-		this.hospital_beds_per_100k = hospital_beds_per_100k;
+	public void setHospital_beds_per_thousand(float hospital_beds_per_thousand) {
+		this.hospital_beds_per_thousand = hospital_beds_per_thousand;
+	}
+
+	public float getLife_expectancy() {
+		return life_expectancy;
+	}
+
+	public void setLife_expectancy(float life_expectancy) {
+		this.life_expectancy = life_expectancy;
+	}
+
+	@Override
+	public String toString() {
+		return "Tbl_Covid19 [id=" + id + ", iso_code=" + iso_code + ", continent=" + continent + ", location=" + location
+				+ ", reported_date=" + reported_date + ", total_cases=" + total_cases + ", new_cases=" + new_cases + ", total_deaths="
+				+ total_deaths + ", new_deaths=" + new_deaths + ", total_cases_per_million=" + total_cases_per_million
+				+ ", new_cases_per_million=" + new_cases_per_million + ", total_deaths_per_million=" + total_deaths_per_million
+				+ ", new_deaths_per_million=" + new_deaths_per_million + ", total_tests=" + total_tests + ", new_tests=" + new_tests
+				+ ", total_tests_per_thousand=" + total_tests_per_thousand + ", new_tests_per_thousand=" + new_tests_per_thousand
+				+ ", new_tests_smoothed=" + new_tests_smoothed + ", new_tests_smoothed_per_thousand=" + new_tests_smoothed_per_thousand
+				+ ", tests_units=" + tests_units + ", stringency_index=" + stringency_index + ", population=" + population
+				+ ", population_density=" + population_density + ", median_age=" + median_age + ", aged_65_older=" + aged_65_older
+				+ ", aged_70_older=" + aged_70_older + ", gdp_per_capita=" + gdp_per_capita + ", extreme_poverty=" + extreme_poverty
+				+ ", cvd_death_rate=" + cvd_death_rate + ", diabetes_prevalence=" + diabetes_prevalence + ", female_smokers="
+				+ female_smokers + ", male_smokers=" + male_smokers + ", handwashing_facilities=" + handwashing_facilities
+				+ ", hospital_beds_per_thousand=" + hospital_beds_per_thousand + ", life_expectancy=" + life_expectancy + "]";
 	}
 
 }
