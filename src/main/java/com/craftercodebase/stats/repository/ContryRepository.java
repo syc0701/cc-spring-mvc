@@ -25,7 +25,7 @@ public interface ContryRepository extends PagingAndSortingRepository<CountryEnti
 			"        FROM" +
 			"            tbl_covid19) " +
 			"GROUP BY iso_code , location " +
-			"ORDER BY total_cases DESC " +
+			"ORDER BY iso_code DESC " +
 			"LIMIT :limit")
 	List<CountryEntity> findCountriesTopN(@Param("limit") int limit);
 

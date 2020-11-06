@@ -56,7 +56,7 @@ NETWORK ID          NAME                DRIVER              SCOPE
 
 3\. The 'db_craftercodebase' database and users in Mysql can be created by running the following command.
 
->__$ mysql -h 172.16.1.10 -u root -p < cc-mysql-inital.sql__
+>__$ mysql -h 172.16.1.10 -u root -p__
 	
 ```sql
 create database db_craftercodebase;                 

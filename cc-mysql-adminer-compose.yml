@@ -16,7 +16,7 @@ services:
       MYSQL_ROOT_PASSWORD: ccpass
     networks:
       frontend:
-        ipv4_address: 172.16.1.10
+        ipv4_address: 172.16.1.10 
 
   adminer:
     image: adminer
@@ -24,7 +24,8 @@ services:
     depends_on:
       - db
     ports:
-      - 9000:8080
+      #- 9000:8080
+      - 9000:8081
     networks:
         frontend:
           ipv4_address: 172.16.1.11

@@ -32,7 +32,7 @@ IGNORE 1 ROWS
    iso_code,
 	continent,
 	location,
-	date,
+	reported_date,
 	total_cases,
 	new_cases,
 	total_deaths,
