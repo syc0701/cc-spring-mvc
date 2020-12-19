@@ -4,10 +4,10 @@
 	<contextName>Crafter</contextName>
 
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>D:/canada/cc-spring-mvc-logs/${CONTEXT_NAME}.log</file>
+		<file>D:/canada/cc-spring-mvc/logs/${CONTEXT_NAME}.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
-			<fileNamePattern>D:/canada/cc-spring-mvc-logs/${CONTEXT_NAME}-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>D:/canada/cc-spring-mvc/logs/${CONTEXT_NAME}-%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!-- keep 30 days' worth of history -->
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
